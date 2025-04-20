@@ -7,10 +7,11 @@ const register = asyncHandler(async(req , res)=>{
     //register a user
     const {username , password , fullName , email} = req.body
 
-    if([username,password,fullName,email].reduce((val)=>val?.trim() === "")){
+    if([username,password,fullName,email].some((val)=>val?.trim() === "")){
         throw new ApiError(400 , `${val} is not present`)
     }
 
+    console.log("avatar : " ,req.files.avatar[0]?.path)
     const avatarLocalPath = req.files.avatar[0]?.path
     if(!avatarLocalPath) throw new ApiError(400 , "Avatar not Present")
 
@@ -26,7 +27,7 @@ const register = asyncHandler(async(req , res)=>{
         avatar : avatarUri.url
     })
 
-    await User.save(newUser) 
+    await newUser.save({validateBeforeSave:false}) 
 
     return res
     .status(200)

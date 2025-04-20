@@ -4,8 +4,8 @@ import { register } from '../controllers/user.controller.js'
 
 const router = Router()
 
-router.route('/upload-file').post(upload.fields([{
-        name : 'coverImage',
+router.route('/register').post(upload.fields([{
+        name : 'avatar',
         maxCount : 1
     }]) ,register
 )
