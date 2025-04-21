@@ -3,6 +3,7 @@ import {ApiError} from '../utils/apiError.js'
 import {ApiResponse} from '../utils/apiResponse.js'
 import { asyncHandler } from '../utils/asyncHandler.js'
 import uploadToCloudinary from '../utils/Cloudinary.js'
+import generateTokens from '../utils/tokens.js'
 const register = asyncHandler(async(req , res)=>{
     //register a user
     const {username , password , fullName , email} = req.body
@@ -11,28 +12,36 @@ const register = asyncHandler(async(req , res)=>{
         throw new ApiError(400 , `${val} is not present`)
     }
 
+    const userValidation = User.findOne({
+        $or: [{email},{username}]
+    })
+
+    if(userValidation) throw new ApiError(409 , "User already exists")
+
     console.log("avatar : " ,req.files.avatar[0]?.path)
     const avatarLocalPath = req.files.avatar[0]?.path
     if(!avatarLocalPath) throw new ApiError(400 , "Avatar not Present")
 
-    const avatarUri = await uploadToCloudinary(avatarLocalPath)
-    
-    console.log(avatarUri)
+    const avatarUri = await uploadToCloudinary(avatarLocalPath) //Uploads file to cloudinary 
 
-    const newUser = new User({
+    const newUser = await User.create({
         fullName : fullName,
-        username : username,
+        username : username.toLowerCase(),
         password : password ,
         email : email ,
-        avatar : avatarUri.url
+        avatar : avatarUri.url,
+        refreshToken: ""
     })
 
-    await newUser.save({validateBeforeSave:false}) 
+    const user = User.findById(user._id).select("username , fullName , email , avatar")
+    
+    await newUser.save()
+    console.log("newUser" , newUser)
 
     return res
     .status(200)
     .json(
-        new ApiResponse(200 , "User registered Successfully")
+        new ApiResponse(200 , "User registered Successfully", {user})
     )
 })
 
