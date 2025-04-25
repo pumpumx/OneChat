@@ -23,20 +23,22 @@ const userSchema = new mongoose.Schema(
         },
         avatar : {
             type: String,
-            required: true,
+            // required: true,
         },
         refreshToken : {
-            type : String,
+            type : String || null,
         }
     },{timestamps:true})
 
-userSchema.pre('save', (password , next)=>{
-    this.password = bcrypt.hashSync(password , 10)
+userSchema.pre('save', async function(next){
+    if (!this.isModified('password')) return next();
+    
+    this.password = await bcrypt.hash(this.password , 10)
     next()
 })
 
-userSchema.methods.isPasswordCorrect = function(password){
-   return bcrypt.compareSync(password , this.password)
+userSchema.methods.isPasswordCorrect = async function(password){
+   return await bcrypt.compare(password , this.password)
 }
 
 userSchema.methods.generateAccessToken = function(){

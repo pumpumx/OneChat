@@ -3,7 +3,7 @@ class ApiError extends Error{
         super(message)
         this.status = status 
         this.error = []
-        this.suceess = false
+        this.success = false
         if(stack){
             this.stack = stack 
         }

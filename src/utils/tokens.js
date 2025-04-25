@@ -5,15 +5,16 @@ const generateTokens = async (userid)=>{
         console.log("id at token" , userid)
         const user = await User.findById(userid)
         console.log(user)
-        if(!user) throw new ApiError(400, "User doesNot exist")
+        if(!user) throw new ApiError(400, "User does Not exist")
         const accessToken = user.generateAccessToken()
         console.log("accessToken" , accessToken)
         if(!accessToken) throw new ApiError(500 , "Failed to generate accessToken")
 
         const refreshToken = user.generateRefreshToken()
         if(!refreshToken) throw new ApiError(500 , "Failed to generate Refresh Token")
-
-        return {accessToken , refreshToken}
+        
+            const tokens = {accessToken , refreshToken}
+        return tokens
     } catch (error) {
         throw new ApiError(500 , "Tokens error occured" , error)
     }

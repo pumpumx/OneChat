@@ -10,12 +10,12 @@ app.use(express.urlencoded({
 }))
 app.use(cookieParser())
 app.use(cors({
-    origin:process.env.CORS_ORIGIN,
+    origin:"*",
     optionsSuccessStatus : 200,
     credentials: true
 }))
 app.use(express.json(
-    {limit:"20kb"}
+    {limit:"40kb"}
 ))
 
 
