@@ -12,19 +12,23 @@ const register = asyncHandler(async(req , res)=>{
         throw new ApiError(400 , `All fieldValues are required`)
     }
 
+    if(password.length()<6){
+        throw new ApiError(400 , "Password min length should be 6")
+    }
+
     const userValidation = await User.findOne({
         $or: [{email},{username}]
     })
 
     if(userValidation) throw new ApiError(409 , "User already exists")
-    // if(req.files?.avatar[0].path){
-    // console.log("file" , req.files)
-    // console.log("avatar : " , req.files.avatar[0]?.path , req.files)
-    // const avatarLocalPath = req.files.avatar[0]?.path
-    // if(!avatarLocalPath) throw new ApiError(400 , "Avatar not Present")
+    if(req.files?.avatar[0].path){
+    console.log("file" , req.files)
+    console.log("avatar : " , req.files.avatar[0]?.path , req.files)
+    const avatarLocalPath = req.files.avatar[0]?.path
+    if(!avatarLocalPath) throw new ApiError(400 , "Avatar not Present")
 
-    // const avatarUri = await uploadToCloudinary(avatarLocalPath) //Uploads file to cloudinary 
-    // }
+    const avatarUri = await uploadToCloudinary(avatarLocalPath) //Uploads file to cloudinary 
+    }
         
         const newUser = await User.create({
             fullName : fullName,
@@ -86,6 +90,66 @@ const loginUser = asyncHandler(async(req ,res)=>{
     .json(
         new ApiResponse(200 , "User logged in Successfully" , {})
     )
+})
+
+const generateAccessToken = asyncHandler(async(req,res)=>{
+    
+})
+
+const updateUserDetails = asyncHandler(async(req,res)=>{
+    const {username , email , fullName} = req.body
+
+    if(![username , email,fullName].some((val) => val?.trim() !== "")){
+       throw new ApiError(400 , "Atleast one field is required")
+    }
+    const user = req.user?._id
+    if(!user) throw new ApiError(400 , "Invalid User")
+
+    const updatedUser = await User.findById(user)
+
+    if(username?.trim()) updatedUser.username = username
+    if(fullName?.trim()) updatedUser.fullName = fullName
+    if(email?.trim()) updatedUser.email = email 
+
+    await user.save({validateBeforeSave:false})
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200 , "User Details Changed SuccessFully")
+    )
+})
+
+const changePassword = asyncHandler(async(req,res)=>{
+    const {oldPassword , newPassword , confirmPassword} = req.body
+
+
+    if([oldPassword , newPassword , confirmPassword].some((val) => !val?.trim())){
+        throw new ApiError(400 , "All fields are required")
+    }
+
+    const user = req.user._id
+
+    const updatePassOfUser = await User.findById(user)
+
+    if(!updatePassOfUser) throw new ApiError(400 , "Invalid User")
+
+    const passwordValidation = updatePassOfUser.isPasswordCorrect(oldPassword)
+
+    if(!passwordValidation) throw new ApiError(400 , "Invalid old Password")
+
+    if(newPassword.length < 6) throw new ApiError(400 , "min Password length must be 6")
+      
+    if(newPassword !== confirmPassword) throw new ApiError(400 , "password Does Not match ")
+    
+    updatePassOfUser.password = newPassword
+    
+    await updatePassOfUser.save({validateModifiedOnly:true})
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200 , "Password Changed Successfully")
+    )  
 })
 
 const deleteUser = asyncHandler(async(req , res)=>{

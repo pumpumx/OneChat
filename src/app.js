@@ -18,10 +18,10 @@ app.use(express.json(
     {limit:"40kb"}
 ))
 
-
 //Routes
 import userRoute from './routes/user.route.js'
-
+import chatRouter from './routes/chat.routes.js'
 app.use("/api/v1/users" , userRoute )
+app.use("/api/v1/chat" , chatRouter)
 
 export default app

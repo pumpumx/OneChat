@@ -1,12 +1,13 @@
 import connectDB from "./db/connectDB.js";
 import dotenv from 'dotenv'
 import app from "./app.js";
-
+import {serverInstance} from "./commServer/server.js";
+import { ApiError } from "./utils/apiError.js";
 dotenv.config({
     path: "/.env"
 })
 
-connectDB()
+await connectDB()
 .then(()=>{
     try {
         app.listen(process.env.PORT || 8000, ()=>{
@@ -20,3 +21,4 @@ connectDB()
     console.log("Error while connecting to database",err)
 })
 
+await serverInstance()

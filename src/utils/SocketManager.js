@@ -1,14 +1,12 @@
-import { asyncHandler } from "../utils/asyncHandler.js";
-import { ApiError } from "../utils/apiError.js";
-import { ApiResponse } from "../utils/apiResponse.js";
 import {io} from 'socket.io-client'
+import { ApiError } from './apiError';
 
-let socket;
+let socket = null;
 
-const connectUser  = asyncHandler(async(req , res)=>{
+const connectUser  = async (serverUrl)=>{
     
     if(!socket || !socket.connected){
-        socket = io(`http://localhost:${process.env.SERVERPORT}`)
+        socket = io(`${serverUrl}`)
 
         socket.on('connect' , ()=>{
             console.log("User Connected with ID: " , socket.id)
@@ -19,15 +17,22 @@ const connectUser  = asyncHandler(async(req , res)=>{
         })
     }
 
-    
     return res
     .status(200)
     .json(
         new ApiResponse(200 , "Client Connected" , {socketId: socket.id})
     )
-}) 
+}
 
+const getSocket = ()=>{
+    if(!socket || !socket.connected){
+        throw new ApiError(400 , "Error getting Socket")
+    }
+
+    return socket
+}
 
 export {
-    connectUser
+    connectUser,
+    getSocket
 }
