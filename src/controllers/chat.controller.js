@@ -1,33 +1,11 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
-import {io} from 'socket.io-client'
+import { userSocketMap } from "../commServer/server.js";
 
-let socket;
-
-const connectUser  = asyncHandler(async(req , res)=>{
+const sendMessage = {
     
-    if(!socket || !socket.connected){
-        socket = io(`http://localhost:${process.env.SERVERPORT}`)
-
-        socket.on('connect' , ()=>{
-            console.log("User Connected with ID: " , socket.id)
-        })
-
-        socket.on('connect_error' , (err)=>{
-            console.log("Error Connecting User" , err)
-        })
-    }
-
-    
-    return res
-    .status(200)
-    .json(
-        new ApiResponse(200 , "Client Connected" , {socketId: socket.id})
-    )
-}) 
-
+}
 
 export {
-    connectUser
 }

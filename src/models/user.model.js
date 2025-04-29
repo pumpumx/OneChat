@@ -27,6 +27,9 @@ const userSchema = new mongoose.Schema(
         },
         refreshToken : {
             type : String || null,
+        },
+        socketId: {
+            type: String || null,
         }
     },{timestamps:true})
 

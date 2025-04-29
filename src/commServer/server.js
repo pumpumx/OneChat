@@ -1,27 +1,41 @@
-import app from "../app.js";
-import {Server, Socket } from "socket.io";
+import {Server} from "socket.io";
 import { ApiError } from "../utils/apiError.js";
-
+import { handleMessages } from "./messageHandler.js";
+let userSocketMap = new Map()
+let io;
 const serverInstance = async function(){
-    const port = process.env.SERVERPORT
     try {
-        const io =  new Server(port, {
+        io =  new Server(process.env.SERVERPORT,{
             cors:{
-                origin:'*',
-                methods:['GET' , 'POST'],
-                credentials:'TRUE'
+                origin:"*",
+                credentials:true,
+                methods: ['GET','POST']
             }
         })
-        if(!io) throw new ApiError(500 , "Failed to initialise a server" , [{status:500,message:"Failed"}])
-        console.log("Server connection successful at port " , port)
 
-        io.on("connection",(socket)=>{
-            console.log("Client Connected Id: ",socket.id)
+        console.log("Socket io server running at port " , process.env.SERVERPORT)
+
+        if(!io) throw new ApiError(500 , "Failed to initialise a server" , [{status:500,message:"Failed"}])
+
+        io.on('connection',(socket)=>{
+            console.log("User Connected with id" ,socket.id)
+            handleMessages(socket , io)
+            socket.on('disconnect' , ()=>{
+                for(let [uId , sId] of userSocketMap.entries()){
+                    if(sId === socket.id){
+                        userSocketMap.delete(uId);
+                    }
+                }
+            })
         })
+
     } catch (error) {
-        throw new ApiError(500 , " Server error while establishing server" , error)
-    }
-}
+        throw new ApiError(500 , " Server error while establishing server" , [{message:"Failed to create socketIo server"}])
+}}
+
+
 export {
     serverInstance,
+    userSocketMap,
+    io
 }

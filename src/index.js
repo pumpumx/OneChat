@@ -11,7 +11,7 @@ await connectDB()
 .then(()=>{
     try {
         app.listen(process.env.PORT || 8000, ()=>{
-            console.log(`Server running at port ${process.env.PORT}`)
+            console.log(`Databse Server running at port ${process.env.PORT}`)
         })
     } catch (error) {
         console.log(`Error running at port ${process.env.PORT}`)
@@ -21,4 +21,4 @@ await connectDB()
     console.log("Error while connecting to database",err)
 })
 
-await serverInstance()
+serverInstance()
