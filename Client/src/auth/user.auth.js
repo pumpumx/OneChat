@@ -16,8 +16,7 @@ class authentication{
     async loginUser(formData){
         try {
             const response = await axios.post("http://localhost:3000/api/v1/users/login" , formData)
-            const data = response.json()
-            return data;
+            return response;
         } catch (error) {
             console.log("Error while Login User user" , error)
         }
