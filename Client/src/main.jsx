@@ -8,11 +8,11 @@ import RouteAuthProvider from './auth/RouteAuthProvider.jsx'
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <>
-        <Route path='/' element={<Home />} >
+        <Route path='/' element={<App />} >
         </Route>
         <Route element={<RouteAuthProvider />}> //Protected Routes
-            <Route path='/chat-app' element={<Chat/>}/>
-            <Route path='/private-chat' element={<PrivateChat/>}/>
+            {/* <Route path='/chat-app' element={<Chat/>}/> */}
+            {/* <Route path='/private-chat' element={<PrivateChat/>}/> */}
         </Route>
     </>
   )

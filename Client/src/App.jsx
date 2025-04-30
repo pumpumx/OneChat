@@ -1,8 +1,8 @@
 import React from 'react'
-
+import Register from './components/Login/Register'
 function App() {
   return (
-    <div className=''>hi</div>
+    <Register />
   )
 }
 

@@ -3,17 +3,17 @@ class authentication{
     constructor(formData){
         this.formData = formData;
     }
-    async register(formData){
+    async registerUser(formData){
         try {
             const response = await axios.post("http://localhost:3000/api/v1/users/register" , formData)
-            const data = response.json()
-            return data;
+            console.log("Register response: " , response )
+            return response;
         } catch (error) {
             console.log("Error while registering user" , error.error)
         }
     }
 
-    async login(formData){
+    async loginUser(formData){
         try {
             const response = await axios.post("http://localhost:3000/api/v1/users/login" , formData)
             const data = response.json()
@@ -28,5 +28,5 @@ class authentication{
 const authMethod = new authentication;
 
 export{
-    authMethod
+    authMethod,
 }
