@@ -4,11 +4,11 @@ import { useAtomValue } from 'jotai'
 import { userAtom } from '../../atoms/atom.js'
 import Notify from '../Utils/Notify.jsx'
 function Login() {
-    const loginAtomVal = useAtomValue(userAtom) 
-    
+  const loginAtomVal = useAtomValue(userAtom)  
+  console.log("loginAtom" , loginAtomVal)
   return (
     <>
-        {loginAtomVal.status==200 && <Notify message={`${loginAtomVal.data}`}/>}
+        {loginAtomVal && <Notify message={`${loginAtomVal.data}`}/>}
         <div className='w-full bg-black flex items-center h-screen p-10 space-x-1'>
         <div className='absolute top-4'>
         </div>
@@ -19,7 +19,6 @@ function Login() {
         </div>
     </div>
     </>
-  
   )
 }
 

@@ -8,7 +8,7 @@ function Register() {
   console.log("register: ",registerAtomVal)
   return (
     <>
-      {registerAtomVal.status==200 && <Notify label={true} message={`${registerAtomVal.data}`} />}
+      {registerAtomVal && <Notify label={true} message={`${registerAtomVal.data}`}  />}
       <div className='w-full h-screen flex items-center justify-around bg-black px-50 py-10 '>
         <div className='absolute  '>
 
@@ -24,8 +24,8 @@ function Register() {
             </p>
 
           </div>
-          <div className='ImageSection w-[75%] h-[70%] bg-red-400  overflow-hidden '>
-            <video autoPlay loop src="/images/login/register.mp4"
+          <div className='ImageSection w-[75%] h-[70%]  overflow-hidden '>
+            <video autoPlay loop muted src="/images/login/register.mp4"
               className='bg-cover'
             />
           </div>

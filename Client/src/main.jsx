@@ -4,16 +4,16 @@ import './index.css'
 import App from './App.jsx'
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import RouteAuthProvider from './auth/RouteAuthProvider.jsx'
-import { LazyLogin } from './components/LazyComp.jsx'
+import { LazyLogin , lazyMainChat} from './components/LazyComp.jsx'
 import WithSuspense from './components/WithSuspense.jsx'
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path='/login' element={WithSuspense(LazyLogin)} >
       </Route>
-      <Route path='/register' element={<App />} />
+      <Route path='/register' element={<App/>} />
       <Route element={<RouteAuthProvider />}> //Protected Routes
-        {/* <Route path='/register' element={<Chat/>}/> */}
+        <Route path='/app' element={WithSuspense(lazyMainChat)}/>
         {/* <Route path='/private-chat' element={<PrivateChat/>}/> */}
       </Route>
     </>

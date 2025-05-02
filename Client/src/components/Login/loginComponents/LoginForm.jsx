@@ -7,11 +7,13 @@ import Spinner from '../../Utils/Spinner'
 import Register from '../Register'
 import { useSetAtom } from 'jotai'
 import { authMethod } from '../../../auth/user.auth'
-import { userAtom } from '../../../atoms/atom.js'
 import { useNavigate } from 'react-router-dom'
+import { setUserToLocalStorage } from '../../../auth/localStorage.user.js'
+import { userAtom } from '../../../atoms/atom.js'
 function LoginForm() {
-
+    
     const setLoginAtom = useSetAtom(userAtom)
+
     const navigate = useNavigate()
     const loginSchema = yup.object().shape({
         username: yup.string().required('Username is required'),
@@ -31,14 +33,16 @@ function LoginForm() {
     const onSubmit = async (data) => {  
         try {
             const response = await authMethod.loginUser(data)
+            console.log("res" , response.data)
             if (response && response.status == 200) {
                 setLoginAtom(response.data)
+                setUserToLocalStorage(response.data) 
                 setTimeout(()=>{
-                    navigate('/app')
+                        navigate('/app')
                 },1000)
-            }
+            }   
             else{
-                setLoginAtom({})
+                setLoginAtom(null)
             }
         } catch (error) {
             console.warn("Error occured at register user", error)
