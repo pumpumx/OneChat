@@ -2,11 +2,13 @@ import { clientSocket } from "./useServer";
 import { chatHistory } from "../atoms/chatAtom";
 import { store } from "../atoms/store.js";
 
-const sendMessage = (data , username)=>{
+const sendMessage = (data)=>{
+
+
     console.log("data" , data)
     
     if(clientSocket && clientSocket.connected){
-        clientSocket.emit("send_message" , ({data , username}))
+        clientSocket.emit("send_message" , (data))
     }
     else{
         console.log("User Not Connected")

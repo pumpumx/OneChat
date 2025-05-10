@@ -8,12 +8,14 @@ app.use(express.urlencoded({
     extended:true,
     limit : "16kb"
 }))
-app.use(cookieParser())
 app.use(cors({
     origin:"http://localhost:5173",
     optionsSuccessStatus : 200,
     credentials: true
 }))
+app.use(cookieParser())
+
+
 app.use(express.json(
     {limit:"40kb"}
 ))

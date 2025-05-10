@@ -12,6 +12,7 @@ function ChatMessage() {
 
     clientConnectionInstance()
 
+
     return () => {
       if (clientSocket) {
         clientSocket.disconnect();

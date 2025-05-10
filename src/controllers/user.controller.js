@@ -84,7 +84,7 @@ const loginUser = asyncHandler(async(req ,res)=>{
     const refreshToken = tokens.refreshToken
     const options = {
         httpOnly : true,
-        secure: true,
+        secure: false
     }
     const resUser = await User.findByIdAndUpdate(user._id, 
         {refreshToken},

@@ -1,15 +1,19 @@
 import { io } from "socket.io-client";
 import { recieveMessage } from "./clientMessageHandler.js";
+import { authMethod } from "../auth/user.auth.js";
 let clientSocket = null;
 const clientConnectionInstance = async () => {
   try {
+
+    const socketToken = await authMethod.socketAuth()
+
     if (!clientSocket || !clientSocket.connected) {
       const socket = io("http://localhost:8000/" , {
+        auth: {token : socketToken},
         reconnectionAttempts: 5,
         timeout: 5000,
-        
       })
-      
+
       clientSocket = socket;
       //Change this static port 
     }
