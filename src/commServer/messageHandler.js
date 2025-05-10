@@ -1,9 +1,11 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
-const handleMessages = asyncHandler(async (socket , io)=>{
-    socket.on('send_message' , async(data)=>{
-        console.log("Message recieved" , data)
-        io.emit('recieve_message' , data)
-    })
+import { io } from "./server.js";
+const handleMessages = (socket , io)=>{
+   
+        socket.on('send_message' ,(data)=>{
+            console.log("Message recieved" , data)
+            io.emit("recieve_data" , data)
+        })    
 
     socket.on('send_private' , async({to , data})=>{
         socket.to(to).emit("recieve_private" , {
@@ -15,8 +17,8 @@ const handleMessages = asyncHandler(async (socket , io)=>{
     socket.on('disconnect' , ()=>{
         console.log(`User ${socket.id} disconnected`)
     })
-})
-
+}
+    
 
 export {
     handleMessages

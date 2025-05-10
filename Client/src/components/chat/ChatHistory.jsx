@@ -1,27 +1,36 @@
-import { useAtom } from 'jotai'
-import React, { useEffect, useState } from 'react'
-import { chatHistory } from '../../atoms/chatAtom'
+import React, { useEffect, useState } from 'react';
+import { getUserFromLocalStorage, setChatHistory } from '../../auth/localStorage.user';
+import { useAtom } from 'jotai';
+import { chatHistory } from '../../atoms/chatAtom.js';
+import { userAtom } from '../../atoms/atom.js';
 
 function ChatHistory() {
-    const [history] = useAtom(chatHistory)
-    const [filteredHistory , setFilteredHistory] = useState([history])
+  const [chatHistoryAtom] = useAtom(chatHistory);
+  const [filteredHistory, setFilteredHistory] = useState([]);
+  console.log("hist" , chatHistoryAtom)
 
-    useEffect(()=>{
-        const filtered = (history.filter((val) => typeof val==='string'))
-        setFilteredHistory((prev) => [...prev , filtered])
-        console.log("Filtered History: ", filteredHistory)
-    } , [history])
+
+  useEffect(() => {
+    setFilteredHistory([...chatHistoryAtom]); // No nested arrays
+  }, [chatHistoryAtom]);
+
+  useEffect(() => {
+    setChatHistory(filteredHistory); // Save to localStorage
+  }, [filteredHistory]);
 
   return (
     <>
-    {filteredHistory && filteredHistory.length > 0 ? 
-    (filteredHistory.map((val , index)=>(
-        <div key={index} className='w-[40%] h-[2rem] bg-green-700 text-white'>
-            <p className='font-medium'>{val}</p>
-        </div>
-    ))) : <p>No messages Yet..</p>}
+      {filteredHistory.length > 0 ? (
+        filteredHistory.map((val, index) => (
+          <div key={index} className='w-[40%] h-[2rem] text-white'>
+            <p className='font-medium'> : {val}</p>
+          </div>
+        ))
+      ) : (
+        <p>No messages Yet..</p>
+      )}
     </>
-  )
+  );
 }
 
-export default ChatHistory
+export default ChatHistory;

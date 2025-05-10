@@ -1,15 +1,12 @@
-import { useAtom } from 'jotai'
 import React, { useEffect, useState } from 'react'
-import { userAtom } from '../../atoms/atom'
 import {clientConnectionInstance} from '../../hooks/useServer.js'
 import { clientSocket } from '../../hooks/useServer.js'
 import InputField from '../Login/registerComponents/InputField.jsx'
 import {  sendMessage } from '../../hooks/clientMessageHandler.js'
 import ChatHistory from './ChatHistory.jsx'
 function ChatMessage() {
-    const [user , setUser ] = useAtom(userAtom)
     const [message , setMessage] = useState("")
-
+    
     useEffect(()=>{
       clientConnectionInstance()
       
@@ -23,8 +20,8 @@ function ChatMessage() {
   return (
     <>  
       <div className='w-full h-full bg-black px-2 flex flex-col justify-around '>
-        <div className='w-full h-[70%]  bg-blue-500'>
-          <ChatHistory />
+        <div className='w-full h-[70%] '>
+          <ChatHistory  />
         </div>
 
         <div className=' w-full flex gap-1 h-[3rem] justify-between items-center bg-white'>

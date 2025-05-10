@@ -1,11 +1,12 @@
-const  getUserFromLocalStorage = ()=>{
+const getUserFromLocalStorage = ()=>{
+
     const userStore = localStorage.getItem("userDetails")
 
       try {
         if(userStore!=null){
           const parsedUser = JSON.parse(userStore);
-          console.log("User at getUserFromLocalStorage:", parsedUser.username);
-          return parsedUser;
+          console.log("User at getUserFromLocalStorage:", parsedUser);
+          return parsedUser.message.resUser;
         } 
         return false
       } catch (e) {
@@ -20,7 +21,24 @@ const  getUserFromLocalStorage = ()=>{
       localStorage.setItem("userDetails" , setUserValue)
   }
 
+  const setChatHistory = (chatHistory) => {
+    const setChatHistory = JSON.stringify(chatHistory)
+    localStorage.setItem("chatHistory" , setChatHistory)
+  }
+
+  const getChatHistory = () => {
+    try {
+      const chatHistory = localStorage.getItem("chatHistory")
+      const parseHistory = JSON.parse(chatHistory)
+      return parseHistory
+    } catch (error) {
+        console.log("Error while getting chat history" , error)
+    }
+  }
+
   export {
     getUserFromLocalStorage,
-    setUserToLocalStorage
+    setUserToLocalStorage,
+    setChatHistory,
+    getChatHistory
   }

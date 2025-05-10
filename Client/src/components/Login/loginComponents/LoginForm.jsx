@@ -1,4 +1,5 @@
 import React from 'react'
+import {createPortal} from 'react-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -6,13 +7,13 @@ import InputField from '../registerComponents/InputField'
 import Spinner from '../../Utils/Spinner'
 import Register from '../Register'
 import { useSetAtom } from 'jotai'
-import { authMethod } from '../../../auth/user.auth'
+import { authMethod } from '../../../auth/user.auth.js'
 import { useNavigate } from 'react-router-dom'
 import { setUserToLocalStorage } from '../../../auth/localStorage.user.js'
-import { userAtom } from '../../../atoms/atom.js'
+import { loginAtom } from '../../../atoms/atom.js'
 function LoginForm() {
     
-    const setLoginAtom = useSetAtom(userAtom)
+    const setLoginAtom = useSetAtom(loginAtom)
 
     const navigate = useNavigate()
     const loginSchema = yup.object().shape({
@@ -40,9 +41,15 @@ function LoginForm() {
                 setTimeout(()=>{
                         navigate('/app')
                 },1000)
+                {createPortal(
+                    <Notify message={`${response.data}`}/>
+                )}
             }   
             else{
                 setLoginAtom(null)
+                {createPortal(
+                    
+                )}
             }
         } catch (error) {
             console.warn("Error occured at register user", error)
@@ -67,7 +74,7 @@ function LoginForm() {
                     className='lg:w-[25%] sm:[60%] h-[10%] hover:cursor-grab bg-[#beadad] hover:bg-green-400 rounded-xl 
                    motion-preset-oscillate-sm motion-paused hover:motion-running'
                 >
-                    {isSubmitting ? <Spinner /> : <p className="">Sign in</p>}
+                    {isSubmitting ? <Spinner /> : <p className="">Sign in</p>}  
                 </button>
             </form>
         </div>

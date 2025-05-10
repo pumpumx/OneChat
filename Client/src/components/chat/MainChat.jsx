@@ -6,7 +6,7 @@ function MainChat() {
   return (
     <>
         <div className='w-full h-screen bg-black '>
-            <div className='w-full h-[5rem] mb-10 bg-amber-300'>
+            <div className='w-full h-[3.5rem] mb-10 bg-amber-300'>
                 <ChatNav />
             </div>
             <div className='w-[80%] px-5 py-5 h-[80%] flex mx-auto bg-green-700 items-center justify-between'>

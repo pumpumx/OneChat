@@ -6,13 +6,13 @@ import uploadToCloudinary from '../utils/Cloudinary.js'
 import generateTokens from '../utils/tokens.js'
 const register = asyncHandler(async(req , res)=>{
     //register a user
-    const {username , password , fullName , email} = req.body
+    const {username , password , firstName , lastName , email} = req.body
 
-    if([username,password,fullName,email].some((val)=>!val?.trim())){
+    if([username,password,firstName, lastName , email].some((val)=>!val?.trim())){
         throw new ApiError(400 , `All fieldValues are required`)
     }
 
-    if(password.length()<6){
+    if(password.length<6){
         throw new ApiError(400 , "Password min length should be 6")
     }
 
@@ -20,19 +20,23 @@ const register = asyncHandler(async(req , res)=>{
         $or: [{email},{username}]
     })
 
-    if(userValidation) throw new ApiError(409 , "User already exists")
-    if(req.files?.avatar[0].path){
-    console.log("file" , req.files)
-    console.log("avatar : " , req.files.avatar[0]?.path , req.files)
-    const avatarLocalPath = req.files.avatar[0]?.path
-    if(!avatarLocalPath) throw new ApiError(400 , "Avatar not Present")
+    if(userValidation){
+        throw new ApiError(409 , "User already exists")
+    } 
 
-    const avatarUri = await uploadToCloudinary(avatarLocalPath) //Uploads file to cloudinary 
-    }
+    // if(req.files?.avatar[0].path){
+    // console.log("file" , req.files)
+    // console.log("avatar : " , req.files.avatar[0]?.path , req.files)
+    // const avatarLocalPath = req.files.avatar[0]?.path
+    // if(!avatarLocalPath) throw new ApiError(400 , "Avatar not Present")
+
+    // const avatarUri = await uploadToCloudinary(avatarLocalPath) //Uploads file to cloudinary 
+    // }
         
         const newUser = await User.create({
-            fullName : fullName,
-            username : username.toLowerCase(),
+            firstName : firstName,
+            lastName : lastName ,
+            username : username,
             password : password ,
             email : email ,
             // avatar : avatarUri?.url || "",
@@ -43,7 +47,7 @@ const register = asyncHandler(async(req , res)=>{
 
         const user = await User.findOne({
             $or :[{email} , {username}]
-        }).select("username , fullName , email , avatar")
+        }).select("username , firstName , lastName , email ")
         console.log("User" , user)
         if(!user) throw new ApiError(400 , "response User not found")
         
@@ -69,7 +73,7 @@ const loginUser = asyncHandler(async(req ,res)=>{
 
     if(!user) throw new ApiError(400 , "User does not exist")
 
-    const passwordValidation = await user.isPasswordCorrect(password)
+    const passwordValidation = await user.isPasswordCorrect(password) 
     console.log("user",passwordValidation)
 
     if(!passwordValidation) throw new ApiError(401 , "Password incorrect")
@@ -82,13 +86,17 @@ const loginUser = asyncHandler(async(req ,res)=>{
         httpOnly : true,
         secure: true
     }
-
+    const resUser = await User.findByIdAndUpdate(user._id, 
+        {refreshToken},
+        {new:true}
+    ).select("-password")
+    
     return res
     .status(200)
     .cookie("refreshToken",refreshToken,options)
     .cookie("accessToken",accessToken,options)
     .json(
-        new ApiResponse(200 , "User logged in Successfully" , {})
+        new ApiResponse(200 , "User logged in Successfully" , {resUser})
     )
 })
 

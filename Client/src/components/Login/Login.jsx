@@ -8,7 +8,7 @@ function Login() {
   console.log("loginAtom" , loginAtomVal)
   return (
     <>
-        {loginAtomVal && <Notify message={`${loginAtomVal.data}`}/>}
+        
         <div className='w-full bg-black flex items-center h-screen p-10 space-x-1'>
         <div className='absolute top-4'>
         </div>

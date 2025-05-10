@@ -6,7 +6,6 @@ const sendMessage = (data)=>{
     console.log("data" , data)
     if(clientSocket && clientSocket.connected){
         clientSocket.emit("send_message" , data)
-        console.log("message" , clientSocket)
     }
     else{
         console.log("User Not Connected")
@@ -17,15 +16,14 @@ const recieveMessage = ()=>{
     if(clientSocket || clientSocket.connected ){
         clientSocket.on("recieve_data" , (message)=>{
             console.log("Message from server" , message)
-            
             const prev = store.get(chatHistory)
-            const updated = [{...prev} , message]
+            const updated = [...prev, message]
             console.log("updated array " , updated)
             store.set(chatHistory , updated)
 
         })
     }
-}
+}   
 
 export {
     sendMessage,
