@@ -15,7 +15,7 @@ const clientConnectionInstance = async () => {
       })
 
       clientSocket = socket;
-      //Change this static port 
+       
     }
 
     clientSocket.on("connect" , ()=>{

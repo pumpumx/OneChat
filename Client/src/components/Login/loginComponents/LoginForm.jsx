@@ -10,6 +10,7 @@ import { useSetAtom } from 'jotai'
 import { authMethod } from '../../../auth/user.auth.js'
 import { useNavigate } from 'react-router-dom'
 import { setUserToLocalStorage } from '../../../auth/localStorage.user.js'
+import Notify from '../../Utils/Notify.jsx'
 import { loginAtom } from '../../../atoms/atom.js'
 function LoginForm() {
     
@@ -52,7 +53,7 @@ function LoginForm() {
                 )}
             }
         } catch (error) {
-            console.warn("Error occured at register user", error)
+            console.log("Error occured at Login user", error)
         }
     }
     return (

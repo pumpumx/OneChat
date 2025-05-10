@@ -84,8 +84,10 @@ const loginUser = asyncHandler(async(req ,res)=>{
     const refreshToken = tokens.refreshToken
     const options = {
         httpOnly : true,
-        secure: false
+        secure: false,
+        sameSite: "lax"
     }
+
     const resUser = await User.findByIdAndUpdate(user._id, 
         {refreshToken},
         {new:true}
@@ -128,7 +130,7 @@ const updateUserDetails = asyncHandler(async(req,res)=>{
     )
 })
 
-const changePassword = asyncHandler(async(req,res)=>{
+const changePassword = asyncHandler(async(req,res)=>{   
     const {oldPassword , newPassword , confirmPassword} = req.body
 
 
@@ -176,8 +178,36 @@ const deleteUser = asyncHandler(async(req , res)=>{
 
 })
 
+const isUserAuthenticated = asyncHandler(async(req,res)=> {
+    const user = req.user;
+
+    if(!user) throw new ApiError(404 , "User Unauthenticated" )
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200 , "User Authenticated" , {user})
+    )
+})
+
+const logOutUser = asyncHandler(async(req,res)=> {
+    const user = req.user 
+
+    if(!user) throw new ApiError(404 , "Invalid User")
+    return res
+    .status(200)
+    .clearCookie('accessToken')
+    .clearCookie('refreshToken')
+    .json(
+        new ApiResponse(200 , "User Logout Successfully")
+    )
+})
+
 export {
     register,
     loginUser,
-    deleteUser
+    deleteUser,
+    isUserAuthenticated,
+    changePassword,
+    updateUserDetails
 }

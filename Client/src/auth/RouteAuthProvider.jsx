@@ -1,17 +1,31 @@
 import { Outlet, Navigate } from "react-router-dom";
-import React  from "react";
-import { useAtomValue} from "jotai";
-import { userAtom } from "../atoms/atom";
-import { getUserFromLocalStorage } from "./localStorage.user";
+import React, { useEffect, useState } from "react";
+import { authMethod } from '../auth/user.auth.js'
+import Spinner from "../components/Utils/Spinner.jsx";
 function RouteAuthProvider() {
-  const atomUser = useAtomValue(userAtom);
-  const localUser = getUserFromLocalStorage()
 
-  const user = atomUser || localUser;
-  console.log("Atom user " , user)
-  console.log("local user " , localUser)
+  const [isAuthenticated, setIsAuthenticated] = useState(null)
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const authResponse = await authMethod.isAuthenticated()
+        setIsAuthenticated(authResponse)
+      } catch (error) {
+        setIsAuthenticated(false)
+        console.log("Error validating user" , error)
+      }
 
-  return user ? <Outlet /> : <Navigate to="/login" />;
+    }
+
+    checkAuth();
+  }, [])
+
+  if (isAuthenticated === null) {
+    return <Spinner />
+  }
+  console.log("isAuth", isAuthenticated)
+  1
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
 }
 
 export default RouteAuthProvider;

@@ -23,9 +23,11 @@ const serverInstance = async function(){
 
             const socketToken = socket.handshake.auth.token
             
-            console.log("socketToken " , socketToken)
-        
+            if(!socketToken) throw new ApiError(404 , "Invalid Token")
+
             const user =  jwt.verify(socketToken , process.env.SOCKET_AUTH_SECRET)
+            
+            if(!user) throw new ApiError(404 , "Invalid User")
 
             handleMessages(socket , io , user)
 
