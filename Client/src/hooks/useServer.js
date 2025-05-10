@@ -6,7 +6,8 @@ const clientConnectionInstance = async () => {
     if (!clientSocket || !clientSocket.connected) {
       const socket = io("http://localhost:8000/" , {
         reconnectionAttempts: 5,
-        timeout: 5000
+        timeout: 5000,
+        
       })
       
       clientSocket = socket;

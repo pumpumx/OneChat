@@ -9,7 +9,7 @@ function  Navbar() {
   };
 
   return (
-    <nav className="w-full bg-black text-white flex justify-between items-center px-6 py-4 shadow-md">
+    <nav className="w-full bg-black h-full text-white flex justify-between items-center px-6 py-4 shadow-md">
       <div className="text-2xl font-bold tracking-wide">
         Chat<span className="text-gray-400">App</span>
       </div>

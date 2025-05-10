@@ -5,7 +5,9 @@ class authentication{
     }
     async registerUser(formData){
         try {
-            const response = await axios.post("http://localhost:3000/api/v1/users/register" , formData)
+            const response = await axios.post("http://localhost:3000/api/v1/users/register" , formData , {
+                withCredentials: true
+            })
             console.log("Register response: " , response )
             return response;
         } catch (error) {
@@ -15,7 +17,9 @@ class authentication{
 
     async loginUser(formData){
         try {
-            const response = await axios.post("http://localhost:3000/api/v1/users/login" , formData)
+            const response = await axios.post("http://localhost:3000/api/v1/users/login" , formData , {
+                withCredentials: true 
+            })
             return response;
         } catch (error) {
             console.log("Error while Login User user" , error)

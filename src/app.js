@@ -10,7 +10,7 @@ app.use(express.urlencoded({
 }))
 app.use(cookieParser())
 app.use(cors({
-    origin:"*",
+    origin:"http://localhost:5173",
     optionsSuccessStatus : 200,
     credentials: true
 }))

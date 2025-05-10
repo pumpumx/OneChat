@@ -9,7 +9,7 @@ function MainChat() {
             <div className='w-full h-[3.5rem] mb-10 bg-amber-300'>
                 <ChatNav />
             </div>
-            <div className='w-[80%] px-5 py-5 h-[80%] flex mx-auto bg-green-700 items-center justify-between'>
+            <div className='w-[80%] px-5 py-5 h-[80%] flex mx-auto  items-center justify-between'>
                 <div className='w-[40%] h-[70%] bg-amber-700 justify-start'>
                     {WithSuspense(lazyMessage)}
                 </div>
