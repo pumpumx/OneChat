@@ -5,7 +5,7 @@ function Notify({ label=true , message="Successfull" , className="" }) {
 
   return (
     <div className={`w-[13rem] items-center h-[3rem] px-2 mx-auto my-auto border-2 mt-[8rem]  absolute ${label?" border-green-300 text-green-500":"border-red-500 text-red-500"}  bg-white
-    motion-scale-in-125  rounded-lg overflow-x-hidden
+    motion-scale-in-125 rounded-lg overflow-x-hidden
      ${className}`}>
       <p className='text-sm text-center font-bold '>{message}</p>
     </div>

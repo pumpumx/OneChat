@@ -35,7 +35,6 @@ function LoginForm() {
     const onSubmit = async (data) => {  
         try {
             const response = await authMethod.loginUser(data)
-            console.log("res" , response.data)
             if (response && response.status == 200) {
                 setLoginAtom(response.data)
                 setUserToLocalStorage(response.data) 
@@ -43,13 +42,15 @@ function LoginForm() {
                         navigate('/app')
                 },1000)
                 {createPortal(
-                    <Notify message={`${response.data}`}/>
+                    <Notify message={`${response.data}`}/>,
+                    document.body
                 )}
-            }   
+            }
             else{
                 setLoginAtom(null)
                 {createPortal(
-                    
+                    <Notify message={`Incorrect Password`}/>,
+                    document.body
                 )}
             }
         } catch (error) {
@@ -73,10 +74,13 @@ function LoginForm() {
 
                 <button type="submit"
                     className='lg:w-[25%] sm:[60%] h-[10%] hover:cursor-grab bg-[#beadad] hover:bg-green-400 rounded-xl 
-                   motion-preset-oscillate-sm motion-paused hover:motion-running'
+                   motion-preset-oscillate-sm self-center motion-paused hover:motion-running'
                 >
                     {isSubmitting ? <Spinner /> : <p className="">Sign in</p>}  
                 </button>
+
+                    <p className='text-sm font-semibold hover:text-green-400 text-gray-800 cursor-pointer'>Forgot Your Password?</p>
+
             </form>
         </div>
     )

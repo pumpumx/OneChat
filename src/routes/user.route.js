@@ -12,7 +12,7 @@ userRouter.route('/register').post(upload.fields([{
 
 userRouter.route('/login').post(loginUser)
 userRouter.route('/user-auth').post(verifyJWT , isUserAuthenticated)
-//secured Routes
+//secured Routes   
 userRouter.route('/delete-user').post(verifyJWT , deleteUser)
 
 export default userRouter

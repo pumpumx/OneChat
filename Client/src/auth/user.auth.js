@@ -46,7 +46,6 @@ class authentication{
        if(isAuth.data.status == 200 ){
         return true
        } 
-
        return false
     }
 
