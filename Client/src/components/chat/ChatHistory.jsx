@@ -1,5 +1,5 @@
 import React, { useEffect,useState } from 'react';
-import { setChatHistory } from '../../auth/localStorage.user';
+import { setChatHistory } from '../../auth_api/localStorage.user.js';
 import { useAtom } from 'jotai';
 import { chatHistory } from '../../atoms/chatAtom.js';
 function ChatHistory() {
@@ -7,11 +7,12 @@ function ChatHistory() {
   const [filteredHistory, setFilteredHistory] = useState([]);
   console.log("hist" , chatHistoryAtom)
   useEffect(() => {
+    //Run that function here
     setFilteredHistory([...chatHistoryAtom]); // No nested arrays
   }, [chatHistoryAtom]);
 
   useEffect(() => {
-    setChatHistory(filteredHistory); // Save to localStorage
+    setChatHistory(filteredHistory); // Save to localStorage  
   }, [filteredHistory]);
 
   return (

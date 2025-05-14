@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 import { recieveMessage } from "./clientMessageHandler.js";
-import { authMethod } from "../auth/user.auth.js";
+import { authMethod } from "../auth_api/user.auth.js";
 let clientSocket = null;
 const clientConnectionInstance = async () => {
   try {

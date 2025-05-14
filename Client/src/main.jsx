@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
-import RouteAuthProvider from './auth/RouteAuthProvider.jsx'
+import RouteAuthProvider from './auth_api/RouteAuthProvider.jsx'
 import { LazyLogin , lazyMainChat} from './components/LazyComp.jsx'
 import WithSuspense from './components/WithSuspense.jsx'
 const routes = createBrowserRouter(
@@ -20,10 +20,7 @@ const routes = createBrowserRouter(
   )
 )
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
     <RouterProvider router={routes}>
       <App />
     </RouterProvider>
-  </StrictMode>
-
 )

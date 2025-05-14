@@ -1,6 +1,6 @@
 import { Outlet, Navigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { authMethod } from '../auth/user.auth.js'
+import { authMethod } from './user.auth.js'
 import Spinner from "../components/Utils/Spinner.jsx";
 function RouteAuthProvider() {
 

@@ -7,11 +7,12 @@ import InputField from '../registerComponents/InputField'
 import Spinner from '../../Utils/Spinner'
 import Register from '../Register'
 import { useSetAtom } from 'jotai'
-import { authMethod } from '../../../auth/user.auth.js'
+import { authMethod } from '../../../auth_api/user.auth.js'
 import { useNavigate } from 'react-router-dom'
-import { setUserToLocalStorage } from '../../../auth/localStorage.user.js'
+import { setUserToLocalStorage } from '../../../auth_api/localStorage.user.js'
 import Notify from '../../Utils/Notify.jsx'
 import { loginAtom } from '../../../atoms/atom.js'
+
 function LoginForm() {
     
     const setLoginAtom = useSetAtom(loginAtom)
@@ -30,7 +31,7 @@ function LoginForm() {
         mode: "onChange",
         resolver: yupResolver(loginSchema)
     })
-
+ 
 
     const onSubmit = async (data) => {  
         try {

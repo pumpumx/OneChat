@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { clientConnectionInstance } from '../../hooks/useServer.js'
 import { clientSocket } from '../../hooks/useServer.js'
-import InputField from '../Login/registerComponents/InputField.jsx'
 import { sendMessage } from '../../hooks/clientMessageHandler.js'
 import ChatHistory from './ChatHistory.jsx'
-function ChatMessage() {
+import { usePrevMessageLoad } from '../../hooks/usePrevMessageLoad.js'
 
+function ChatMessage() {
   const [message, setMessage] = useState("")
 
+  usePrevMessageLoad()
+  
   useEffect(() => {
-
+    
     clientConnectionInstance()
-
 
     return () => {
       if (clientSocket) {
