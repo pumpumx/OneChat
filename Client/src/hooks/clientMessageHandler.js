@@ -5,10 +5,10 @@ import { chat } from "../auth_api/chat.auth.js";
 
 const sendMessage = async (data)=>{
     console.log("data" , data)
-    
+    await chat.saveRoomMessage({userMessage: data})  
     if(clientSocket && clientSocket.connected){
         clientSocket.emit("send_message" , (data))
-        await chat.saveRoomMessage(data)
+        // Need to work on it tomorrow !! 
     }
     else{
         console.log("User Not Connected")

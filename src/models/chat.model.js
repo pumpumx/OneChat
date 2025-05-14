@@ -5,11 +5,10 @@ const chatSchema = new mongoose.Schema(
         roomName: {
             type: String,
             required: false,
-
         },
         roomMessages: {
             type: [String],
-            required: false
+            required: true
         }
     },{ timestamps: true })
 

@@ -15,7 +15,7 @@ class chatApi{
             return response;
         } catch (error) {
             console.log("error")
-            return error.data.message
+            return error.data.message.message
         }
     }
 
