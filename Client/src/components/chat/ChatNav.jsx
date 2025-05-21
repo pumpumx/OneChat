@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
 import { FiSettings } from 'react-icons/fi';
-
+import { authMethod } from '../../auth_api/user.auth';
+import { Navigate, useNavigate } from 'react-router-dom';
 function  Navbar() {
   const [showSettings, setShowSettings] = useState(false);
-
+  const navigate = useNavigate()
   const toggleSettings = () => {
     setShowSettings(prev => !prev);
   };
+
+  const handleLogout = async ()=> {
+    const response  = await authMethod.logout()
+    if(response.status === 200){
+      navigate('/login')
+    }
+  }
 
   return (
     <nav className="w-full bg-black h-full text-white flex justify-between items-center px-6 py-4 shadow-md">
@@ -27,7 +35,7 @@ function  Navbar() {
             <ul className="py-2 text-sm">
               <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Profile</li>
               <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Theme</li>
-              <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Logout</li>
+              <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer" onClick={handleLogout}>Logout</li>
             </ul>
           </div>
         )}

@@ -2,7 +2,6 @@ import { User } from '../models/user.model.js'
 import {ApiError} from '../utils/apiError.js'
 import {ApiResponse} from '../utils/apiResponse.js'
 import { asyncHandler } from '../utils/asyncHandler.js'
-import uploadToCloudinary from '../utils/Cloudinary.js'
 import generateTokens from '../utils/tokens.js'
 const register = asyncHandler(async(req , res)=>{
     //register a user
@@ -63,17 +62,19 @@ const loginUser = asyncHandler(async(req ,res)=>{
     console.log("req" , req.body)
     const {username , password , email} = req.body;
 
-    console.log("username ,email, pass" , username  ,email , password)
+   
     if(!username && !email) throw new ApiError(400,"Enter username or email")
-        
+    
     const user  = await User.findOne({
         $or: [{email} , {username}]
     })
+
     console.log("user" , user)
 
     if(!user) throw new ApiError(400 , "User does not exist")
-
+    
     const passwordValidation = await user.isPasswordCorrect(password) 
+
     console.log("user",passwordValidation)
 
     if(!passwordValidation) throw new ApiError(401 , "Password incorrect")
@@ -102,9 +103,6 @@ const loginUser = asyncHandler(async(req ,res)=>{
     )
 })
 
-const generateAccessToken = asyncHandler(async(req,res)=>{
-    
-})
 
 const updateUserDetails = asyncHandler(async(req,res)=>{
     const {username , email , fullName} = req.body
@@ -190,16 +188,16 @@ const isUserAuthenticated = asyncHandler(async(req,res)=> {
     )
 })
 
-const logOutUser = asyncHandler(async(req,res)=> {
+const logoutUser = asyncHandler(async(req,res)=> {
     const user = req.user 
-
     if(!user) throw new ApiError(404 , "Invalid User")
+    
     return res
     .status(200)
     .clearCookie('accessToken')
     .clearCookie('refreshToken')
     .json(
-        new ApiResponse(200 , "User Logout Successfully")
+        new ApiResponse(200 , "User Logout Successfully",{status:true})
     )
 })
 
@@ -209,5 +207,6 @@ export {
     deleteUser,
     isUserAuthenticated,
     changePassword,
-    updateUserDetails
+    updateUserDetails,
+    logoutUser
 }

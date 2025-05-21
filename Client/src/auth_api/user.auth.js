@@ -50,9 +50,10 @@ class authentication{
     }
 
     async logout(){
-        await axios.post("http://localhost:3000/api/v1/users/logout" , null , {
+       const response =  await axios.post("http://localhost:3000/api/v1/users/logout" , null , {
             withCredentials: true
         })
+        return response;
     }
 }
 
