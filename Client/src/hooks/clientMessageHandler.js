@@ -3,41 +3,57 @@ import { chatHistory } from "../atoms/chatAtom";
 import { store } from "../atoms/store.js";
 import { chat } from "../auth_api/chat.auth.js";
 
-const sendMessage = async (data)=>{
-    console.log("data" , data)
-    await chat.saveRoomMessage({userMessage: data})  
-    if(clientSocket && clientSocket.connected){
-        clientSocket.emit("send_message" , (data))
-        // Need to work on it tomorrow !! 
+const sendMessage = async (data) => {
+    await chat.saveRoomMessage({ userMessage: data })
+    if (clientSocket && clientSocket.connected) {
+        clientSocket.emit("send_message", (data))
+        // Need to work on it tomorrow !!  //Lol i forgot what i had to work on it.
     }
-    else{
+    else {
         console.log("User Not Connected")
     }
 }
 
-const recieveMessage = ()=>{
+const sendPrivateMessage = async (data,usernameToWhomMessageWillBeSent) =>{
+    console.log("sendPrivate" , usernameToWhomMessageWillBeSent)
+    if(clientSocket && clientSocket.connected){
+        await clientSocket.emit('send_private',{data,usernameToWhomMessageWillBeSent})
+    }
+    
+}
+
+const recieveMessage = () => {
     try {
-        if(clientSocket || clientSocket.connected ){
-    
-            clientSocket.on("recieve_data" , (message)=>{
-    
-                console.log("Message from server" , message)
-                
+        if (clientSocket || clientSocket.connected) {
+
+            clientSocket.on("recieve_data", (message) => {
+
+                console.log("Message from server", message)
+
                 const prev = store.get(chatHistory)
                 const updated = [...prev, message]
-                console.log("updated array " , updated)
-                store.set(chatHistory , updated)
-    
+                console.log("updated array ", updated)
+                store.set(chatHistory, updated)
                 //Function call of saving the messages to database should be made here when the message has been emitted!
-                
-            })  
+
+            })
         }
     } catch (error) {
-        console.log("Failed to recieve message" , error)
+        console.log("Failed to recieve message", error)
     }
-}   
+}
+
+const recievePrivateMessage = ()=>{
+    if(clientSocket || clientSocket.connected){
+        clientSocket.on('recieve_private',(privateMessage)=>{
+            console.log("PrivateMessage" , privateMessage)
+        })
+    }
+}
 
 export {
     sendMessage,
-    recieveMessage
+    recieveMessage,
+    sendPrivateMessage,
+    recievePrivateMessage
 }

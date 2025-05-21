@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-import { recieveMessage } from "./clientMessageHandler.js";
+import { recieveMessage, recievePrivateMessage } from "./clientMessageHandler.js";
 import { authMethod } from "../auth_api/user.auth.js";
 let clientSocket = null;
 const clientConnectionInstance = async () => {
@@ -27,7 +27,7 @@ const clientConnectionInstance = async () => {
     })
 
     recieveMessage();
-
+    recievePrivateMessage();
   }
   catch (error) {
     console.log("Error while Client connection", error)

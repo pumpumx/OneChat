@@ -4,7 +4,6 @@ import { ApiResponse } from "../utils/apiResponse.js";
 import { Chat } from "../models/chat.model.js";
 import jwt from 'jsonwebtoken'
 
-
 const saveRoomMessages = asyncHandler(async (req, res) => {
     //This thing can be expensive !! Change the logic as the database grows. probably save the message to redis and then save it to database after some time , maybe idk!.. 
     const { userMessage } = req.body;
@@ -51,7 +50,9 @@ const loadRoomMessages = asyncHandler(async (req, res) => {
 
 const createNewRoom = asyncHandler(async (req, res) => {
     //Used to create a temp Room 
-    const roomName = "TestRoom" 
+    const {roomName} = req.body; 
+
+    if(roomName.trim() === '') throw new ApiError(400 , [{status:400,message:"Enter a roomName"}])
     const message = `Welcome to ${roomName}` 
 
     const createRoom = await Chat.create({
@@ -68,6 +69,7 @@ const createNewRoom = asyncHandler(async (req, res) => {
     )
 
 })
+
 
 const socketAuth = asyncHandler(async (req, res) => {
     const user = req.user;
@@ -90,5 +92,5 @@ export {
     socketAuth,
     createNewRoom,
     saveRoomMessages,
-    loadRoomMessages
+    loadRoomMessages,
 }

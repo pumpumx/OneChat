@@ -1,30 +1,46 @@
-import { asyncHandler } from "../utils/asyncHandler.js";
-import { io } from "./server.js";
-import { User } from "../models/user.model.js";
-const handleMessages = (socket , io , user)=>{
-   
-        socket.on('send_message' ,(data)=>{
+
+import { ApiError } from "../utils/apiError.js";
+import { userSocketMap } from "./server.js";
+const handleMessages = (socket, io, user) => {
+
+    try {
+        socket.on('send_message', (data) => {
 
             const updatedMessage = `${user.username} : ${data}`
-            
-            console.log("Message recieved" , updatedMessage)
-            
-            io.emit("recieve_data" , updatedMessage)
-        })    
 
-    socket.on('send_private' , async({to , data})=>{
+            console.log("Message recieved", updatedMessage)
 
-        socket.to(to).emit("recieve_private" , {
-            from: socket.id,
-            data
+            io.emit("recieve_data", updatedMessage)
         })
-    }),
 
-    socket.on('disconnect' , ()=>{
-        console.log(`User ${socket.id} disconnected`)
+        socket.on('send_private', ({ data, usernameToWhomMessageWillBeSent }) => { //This function takes handles private messaging !! 
+
+            if(!usernameToWhomMessageWillBeSent) throw new ApiError(404, "Can't send data because no username exists")
+                
+                let p2p;
+                for(let [uId , sId] of userSocketMap.entries()){
+                    if(uId === usernameToWhomMessageWillBeSent){
+                        p2p = sId
+                    } 
+                }
+
+                io.to(p2p).emit("recieve_private", {data})
+        })
+
+            socket.on('disconnect', () => {
+                console.log(`User ${socket.id} disconnected`)
+            })
+    } catch (error) {
+        console.log("Error at handle Messages", error)
+    }
+}
+
+const joinRoomViaName = (socket, io, user) => {
+    socket.on("Join Room", () => {
+        socket.join('')
     })
 }
-    
+
 
 export {
     handleMessages

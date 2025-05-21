@@ -6,6 +6,7 @@ import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } 
 import RouteAuthProvider from './auth_api/RouteAuthProvider.jsx'
 import { LazyLogin , lazyMainChat} from './components/LazyComp.jsx'
 import WithSuspense from './components/WithSuspense.jsx'
+import PrivateChat from './components/privateChat/PrivateChat.js'
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -16,6 +17,7 @@ const routes = createBrowserRouter(
         <Route path='/app' element={WithSuspense(lazyMainChat)}/>
         {/* <Route path='/private-chat' element={<PrivateChat/>}/> */}
       </Route>
+      <Route path='/private' element={<PrivateChat/>} />
     </>
   )
 )
