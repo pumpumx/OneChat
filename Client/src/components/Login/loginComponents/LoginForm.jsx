@@ -73,11 +73,16 @@ function LoginForm() {
                     < InputField label="Password" type='password' name="password" error={errors.password} register={register} />
                 </div>
 
+
+                {isSubmitting ? createPortal(
+                        <Spinner />,document.body
+                    ) : <p></p>}  
+
                 <button type="submit"
                     className='lg:w-[25%] sm:[60%] h-[10%] hover:cursor-grab bg-[#beadad] hover:bg-green-400 rounded-xl 
-                   motion-preset-oscillate-sm self-center motion-paused hover:motion-running'
+                    self-center  '
                 >
-                    {isSubmitting ? <Spinner /> : <p className="">Sign in</p>}  
+                 Sign In  
                 </button>
 
                     <p className='text-sm font-semibold hover:text-green-400 text-gray-800 cursor-pointer'>Forgot Your Password?</p>

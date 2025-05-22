@@ -4,6 +4,9 @@ import { friendAtom } from '../../atoms/friendAtom'
 import { useAtomValue } from 'jotai'
 import { Send } from 'lucide-react'
 
+const friendRequestHandler = ()=>{  
+    
+}
 
 const ToggledRequestTab = () => {
   const friendNameList = useAtomValue(friendAtom)
