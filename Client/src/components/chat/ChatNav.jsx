@@ -17,15 +17,12 @@ function  Navbar() {
   }
 
   return (
-    <nav className="w-full bg-black h-full text-white flex justify-between items-center px-6 py-4 shadow-md">
-      <div className="text-2xl font-bold tracking-wide">
-        Chat<span className="text-gray-400">App</span>
-      </div>
+    <nav className="w-full bg-neutral-950 h-full text-white flex justify-around relative items-center px-6 py-4 shadow-md">
 
-      <div className="relative">
-        <button
+      <div className="absolute right-10">
+        <button 
           onClick={toggleSettings}
-          className="p-2 rounded-full  hover:bg-white hover:text-black transition duration-300"
+          className="p-2 rounded-full  hover:bg-white hover:cursor-pointer hover:text-black transition duration-300"
         >
           <FiSettings size={24} />
         </button>

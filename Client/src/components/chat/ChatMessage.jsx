@@ -24,7 +24,7 @@ function ChatMessage() {
   return (
     <>
       <div className='w-full h-full bg-gray-800 px-2 flex flex-col justify-around '>
-        <div className='w-full h-[80%] overflow-auto scroll-smooth '>
+        <div className='w-full h-[80%] overflow-auto scroll-smooth px-10 lg:text-xl pixelify-sans-okish'>
           <ChatHistory />
         </div>
 

@@ -4,7 +4,6 @@ import { clientSocket } from '../../hooks/useServer.js'
 import { sendPrivateMessage } from '../../hooks/clientMessageHandler.js'
 import ChatHistory from '../chat/ChatHistory.jsx'
 import { usePrevMessageLoad } from '../../hooks/usePrevMessageLoad.js'
-
 function PrivateChat() {
   const [message, setMessage] = useState("")
   const [username , setUsername] = useState('pupi')   //Work on it so that it handles username!! 
@@ -36,7 +35,7 @@ function PrivateChat() {
               value={message}
             />
           </div>
-          <button className='bg-green-500 hover:bg-[#6cbe6cea] w-[30%] h-full cursor-pointer '
+          <button className='bg-green-500 hover:bg-[#6cbe6cea] lg:outline-none w-[30%] h-full cursor-pointer '
             onClick={() => sendPrivateMessage(message , username)}
           >Click ME to send privateMessage</button>
         </div>
