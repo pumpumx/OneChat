@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { clientConnectionInstance } from '../../hooks/useServer.js'
 import { clientSocket } from '../../hooks/useServer.js'
-import { sendMessage, sendPrivateMessage } from '../../hooks/clientMessageHandler.js'
+import { sendPrivateMessage } from '../../hooks/clientMessageHandler.js'
 import ChatHistory from '../chat/ChatHistory.jsx'
 import { usePrevMessageLoad } from '../../hooks/usePrevMessageLoad.js'
 
 function PrivateChat() {
   const [message, setMessage] = useState("")
-  const [username , setUsername] = useState("pupi")
+  const [username , setUsername] = useState('pupi')   //Work on it so that it handles username!! 
   usePrevMessageLoad()
   
   useEffect(() => {
