@@ -15,9 +15,11 @@ const friendChatSchema = new mongoose.Schema({
         },
         timestamps:{
             type:Date,
-            default:Date.now()
+            default:Date.now
         }
     }]
 },{timestamps:true})
+
+friendChatSchema.index({participants:1})
 
 export const FriendChat = mongoose.model("FriendChat",friendChatSchema)

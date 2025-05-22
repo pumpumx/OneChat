@@ -27,7 +27,7 @@ const saveRoomMessages = asyncHandler(async (req, res) => {
         .json(
             new ApiResponse(200, "message synced with database", { status: "True", message: "message synced with database" })
         )
-})
+}) 
 
 const loadRoomMessages = asyncHandler(async (req, res) => {
     //Verify JWT ie user

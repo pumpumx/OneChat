@@ -24,7 +24,8 @@ app.use(express.json(
 //Routes
 import userRoute from './routes/user.route.js'
 import chatRouter from './routes/chat.routes.js'
+import friendRouter from './routes/friend.routes.js'
 app.use("/api/v1/users" , userRoute )
 app.use("/api/v1/chat" , chatRouter)
-
+app.use("/api/v1/friend",friendRouter)
 export default app
