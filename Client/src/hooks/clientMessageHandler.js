@@ -1,5 +1,5 @@
-import { clientSocket } from "./useServer";
-import { chatHistory } from "../atoms/chatAtom";
+import { clientSocket } from "./useServer.js";
+import { chatHistory } from "../atoms/chatAtom.js";
 import { store } from "../atoms/store.js";
 import { chat } from "../auth_api/chat.auth.js";
 
