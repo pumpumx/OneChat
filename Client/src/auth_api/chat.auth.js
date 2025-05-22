@@ -19,13 +19,6 @@ class chatApi{
         }
     }
 
-    async handleFriendRequest(){
-        try {
-            const response = 
-        } catch (error) {
-            console.log("error",error)
-        }
-    }
     async  saveRoomMessage(userMessage){
         try {
             const response = await axios.post("http://localhost:3000/api/v1/chat/save-room-messages" , userMessage , {
