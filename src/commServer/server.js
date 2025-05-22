@@ -33,7 +33,6 @@ const serverInstance = async function () {
 
             console.log("user ", user)
             handleMessages(socket, io, user) //Function for overall message handling!
-
             socket.on('disconnect', () => {
                 for (let [uId, sId] of userSocketMap.entries()) {
                     if (sId === socket.id) {
