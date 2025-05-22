@@ -1,8 +1,9 @@
 import { atom } from "jotai";
 
-const friendAtom = atom([{name:'Pupi'   }])
-
+const pendingFriendRequestAtom = atom([])
+const confirmedFriends = atom([])
 
 export {
-    friendAtom
+    pendingFriendRequestAtom,
+    confirmedFriends
 }

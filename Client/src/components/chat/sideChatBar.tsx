@@ -1,16 +1,23 @@
-import React, { useState } from 'react'
-import { UserRoundPlus, Search } from 'lucide-react'
-import { friendAtom } from '../../atoms/friendAtom'
-import { useAtomValue } from 'jotai'
-import { Send } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+import { pendingFriendRequestAtom , confirmedFriends } from '../../atoms/friendAtom'
+import { useAtom , useAtomValue} from 'jotai'
+import { friendReq } from '../../auth_api/friendRequest.auth.api'
+import { Check , X , Send , UserRoundPlus, Search  } from 'lucide-react'
 
-const friendRequestHandler = ()=>{  
-    
-}
 
 const ToggledRequestTab = () => {
-  const friendNameList = useAtomValue(friendAtom)
 
+  const [friendNameList,setPendingFriendNameList] = useAtom(pendingFriendRequestAtom)
+  useEffect(()=>{
+    try {
+      ( async ()=>{  
+        const response = await friendReq.checkPendingFriendRequest()
+        setPendingFriendNameList(response)
+       })();
+    } catch (error) {
+      console.log("error" , error)
+    }
+  },[])
   return (
     <div className='absolute w-[25vh] h-[30vh] rounded-lg ease-in bg-neutral-900 top-10 right-0'>
       <div className='w-full lg:h-[15%] flex p-1 flex-row justify-between'>
@@ -25,8 +32,11 @@ const ToggledRequestTab = () => {
         <span className='w-full h-full text-lg font-bold text-white text-center tiny5-regular'><p>Friends List</p></span>
         <div className='w-full h-full p-1 '>
           { friendNameList && friendNameList.map((friend,index)=>(
-            <div className='w-full h-[10%] text-white pixelify-sans-okish font-bold bg-neutral-600 text-center'>
-                {friend.name}
+            <div key={index} className='w-full h-[10%] flex lg:flex-row items-center justify-around text-white pixelify-sans-okish font-bold bg-neutral-600 text-center'>
+                <span className='lg:w-[60%] h-full'><p>{friend.username}</p></span>
+                <div className='lg:w-[10%] h-full flex items-center justify-center'><X color='red'/></div>
+                <div className='lg:w-[10%] h-full flex items-center justify-center '><Check color='#6ed750'/></div>
+
             </div>
           ))}
         </div>
@@ -36,14 +46,14 @@ const ToggledRequestTab = () => {
 }
 
 function SideChatBar() {
-  const friendNameList = useAtomValue(friendAtom)
+  const confirmedFriendsList = useAtomValue(confirmedFriends)
   const [toggleRequestTab, setToggleRequestTab] = useState(false)
 
   const requestToggleHandler = () => {
     setToggleRequestTab(!toggleRequestTab)
   }
 
-
+ 
   return (
     <div className='lg:w-[30%] h-full bg-red-400'> {/* Private chat with friends feature */}
       <header className='w-full lg:h-[10%] bg-neutral-950 flex lg:flex-row items-center justify-between '>
@@ -67,11 +77,11 @@ function SideChatBar() {
 
         <div className='lg:w-full lg:h-[95%] bg-neutral-950'>
           <div className='w-full h-full '>
-            {friendNameList && friendNameList.map((friend, index) => (
+            {confirmedFriendsList && confirmedFriendsList.map((friend, index) => (
               <div key={index} className='w-full pixelify-sans-okish lg:h-[5rem] border-1 border-white/20  mb-[1px]  text-center lg:text-xl
                         hover:cursor-pointer hover:bg-white/25 transition-all
                       text-white font-normal bg-neutral-800'>
-                <span className='lg:w-full lg:h-full justify-center flex lg:flex-row items-center'><p className='text-white'>{friend.name}</p></span>
+                <span className='lg:w-full lg:h-full justify-center flex lg:flex-row items-center'><p className='text-white'>{friend.username}</p></span>
               </div>
             ))}
           </div>
