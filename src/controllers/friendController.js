@@ -11,7 +11,7 @@ const sendFriendRequest = asyncHandler(async (req, res) => {
     if (!user) throw new ApiError(401, [{ status: 401, message: "User unauthorized" }])
 
     const { friendUsername } = req.body
-    if(!friendUsername) throw new ApiError(400 , [{status:400,message:"No username Provided"}])
+    if (!friendUsername) throw new ApiError(400, [{ status: 400, message: "No username Provided" }])
 
     const filteredUsername = friendUsername.trim().toLowerCase()
     if (filteredUsername === '') throw new ApiError(400, "No username Provided", [{ status: 400, message: "Enter a username" }])
@@ -31,70 +31,128 @@ const sendFriendRequest = asyncHandler(async (req, res) => {
         ]
     });
 
-    if(existingRequest){
-        if(existingRequest.status === 'Pending'){
-            throw new ApiError(400,[{status:400,message:"Request already sent"}])
+    if (existingRequest) {
+        if (existingRequest.status === 'Pending') {
+            throw new ApiError(400, [{ status: 400, message: "Request already sent" }])
         }
-        else if(existingRequest.status === 'Accepted'){
-            throw new ApiError(400,[{status:400,message:"You are already friends"}])
+        else if (existingRequest.status === 'Accepted') {
+            throw new ApiError(400, [{ status: 400, message: "You are already friends" }])
         }
     }
 
-    const friendRequest =  new Friend({
-        userId: user._id,
-        friendId: receiverUser._id,
-        status:'Pending'
+    const friendRequestForReciever = new Friend({
+        userId: receiverUser._id,
+        friendId: user._id,
+        status: 'Pending'
     })
 
-    await friendRequest.save()
+    const friendRequestForSender = new Friend({
+        userId: user._id,
+        friendId: receiverUser._id,
+        status: 'Pending'
+    })
+
+    await friendRequestForReciever.save()
+    await friendRequestForSender.save()
+
 
     return res
         .status(200)
         .json(
-            new ApiResponse(200,"Friend Request Sent Successfully",{friendRequest})
+            new ApiResponse(200, "Friend Request Sent Successfully", { friendRequestForReciever })
         )
 
 })
 
-const fetchPendingRequest = asyncHandler(async(req,res)=>{
+const fetchPendingRequest = asyncHandler(async (req, res) => {
     const user = req.user;
 
-    if(!user) throw new ApiError(400,[{status:400,message:"User Unauthorized"}])
+    if (!user) throw new ApiError(400, [{ status: 400, message: "User Unauthorized" }])
 
     const allPendingRequest = await Friend.aggregate([
         {
-            $match: {userId:user._id,status:'Pending'}
+            $match: { userId: user._id, status: 'Pending' }
         },
         {
-            $lookup:{
-                from:'users',
-                localField:'friendId',
-                foreignField:'_id',
-                as:'friendDetails'
+            $lookup: {
+                from: 'users',
+                localField: 'friendId',
+                foreignField: '_id',
+                as: 'friendDetails'
             }
         },
         {
-            $unwind:"$friendDetails"
+            $unwind: "$friendDetails"
         },
         {
-            $project:{
-                _id:1,
-                status:1,
-                username:"$friendDetails.username",
+            $project: {
+                _id: 1,
+                status: 1,
+                username: "$friendDetails.username",
             }
         }
     ])
 
-    if(!allPendingRequest) throw new ApiError(400,[{status:400,message:"Error Fetching Pending Requests"}])
-    
+    if (!allPendingRequest) throw new ApiError(400, [{ status: 400, message: "Error Fetching Pending Requests" }])
+
     return res
-    .status(200)
-    .json(
-        new ApiResponse(200,"Pending Request Fetched Successfully",{allPendingRequest})
-    )
+        .status(200)
+        .json(
+            new ApiResponse(200, "Pending Request Fetched Successfully", { allPendingRequest })
+        )
+})
+
+const friendRequestStatus = asyncHandler(async (req, res) => {
+    const user = req.user //Pupi is the user
+    if (!user) throw new ApiError(400, [{ status: 400, message: "User Unauthorized" }])
+
+    const { responseFromUser, usernameOfUserWhoSentFriendRequest } = req.body //Pupuman is the one who sent request
+
+    if (!usernameOfUserWhoSentFriendRequest) throw new ApiError(400, "No Response from User", [{ status: 400, message: "No response from user" }])
+
+    const requestSenderData = await User.findOne({ username: usernameOfUserWhoSentFriendRequest }).select("_id username")
+
+    if (responseFromUser === false) {
+        await Friend.updateMany({
+            $or: [
+                { userId: user._id ,  friendId: requestSenderData._id },
+                { userId: requestSenderData._id , friendId: user._id }
+            ]
+        },
+            {
+                $set: { status: "Rejected" }
+            },
+        )
+        return res
+            .status(200)
+            .json(
+                new ApiResponse(200, { message: "Request Rejected" })
+            )
+    }
+
+    if (responseFromUser === true) {
+         await Friend.updateMany({
+            $or: [
+                { userId: user._id , friendId: requestSenderData._id },
+                { userId: requestSenderData._id ,  friendId: user._id }
+            ]
+        },
+            {   
+                $set: { status: "Accepted" }
+            })
+            return res
+            .status(200)
+            .json(
+                new ApiResponse(200, {status:200, message: "Request Accepted" })
+            )
+    }
+
+    throw new ApiError(400,"Malformed request Sent")
+
 })
 
 export {
     sendFriendRequest,
-    fetchPendingRequest
+    fetchPendingRequest,
+    friendRequestStatus
 }
