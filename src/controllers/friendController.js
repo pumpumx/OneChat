@@ -3,7 +3,7 @@ import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { Friend } from "../models/friend.model.js";
 import { User } from '../models/user.model.js'
-
+import validator from 'validator'
 const sendFriendRequest = asyncHandler(async (req, res) => {
 
     const user = req.user;
@@ -115,8 +115,8 @@ const friendRequestStatus = asyncHandler(async (req, res) => {
     if (responseFromUser === false) {
         await Friend.updateMany({
             $or: [
-                { userId: user._id ,  friendId: requestSenderData._id },
-                { userId: requestSenderData._id , friendId: user._id }
+                { userId: user._id, friendId: requestSenderData._id },
+                { userId: requestSenderData._id, friendId: user._id }
             ]
         },
             {
@@ -131,28 +131,103 @@ const friendRequestStatus = asyncHandler(async (req, res) => {
     }
 
     if (responseFromUser === true) {
-         await Friend.updateMany({
+        await Friend.updateMany({
             $or: [
-                { userId: user._id , friendId: requestSenderData._id },
-                { userId: requestSenderData._id ,  friendId: user._id }
+                { userId: user._id, friendId: requestSenderData._id },
+                { userId: requestSenderData._id, friendId: user._id }
             ]
         },
-            {   
+            {
                 $set: { status: "Accepted" }
             })
-            return res
+        return res
             .status(200)
             .json(
-                new ApiResponse(200, {status:200, message: "Request Accepted" })
+                new ApiResponse(200, { status: 200, message: "Request Accepted" })
             )
     }
 
-    throw new ApiError(400,"Malformed request Sent")
+    throw new ApiError(400, "Malformed request Sent")
 
 })
 
+const fetchAcceptedFriendList = asyncHandler(async (req, res) => {
+    const user = req.user
+    if (!user) throw new ApiError(400, [{ status: 400, message: "Unauthorized Access" }])
+
+    const friendList = await Friend.aggregate([
+        {
+            $match: { userId: user._id, status: 'Accepted' }
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'friendId',
+                foreignField: '_id',
+                as: 'FriendList'
+            }
+        },
+        {
+            $unwind: '$FriendList'
+        },
+        {
+            $project: {
+                username: '$FriendList.username'
+            }
+        }
+    ])
+
+    if (!friendList) throw new ApiError(400, [{ status: 400, message: "No Friend Found" }])
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(200, "Friend List Fetched Successfully", { friendList })
+        )
+
+})
+
+const removeFriend = asyncHandler(async (req, res) => {
+    const user = req.user
+    if (!user) throw new ApiError(400, [{ status: 400, messaage: "User Unauthorized" }])
+
+    const { friendUsername } = req.body
+    if (!friendUsername || !validator.isAlphanumeric(friendUsername)) throw new ApiError(400, [{ status: 400, messaage: "Friend to be removed not found" }])
+
+    const friendId = await User.find({ username: friendUsername }).select("_id")
+    if (!friendId) throw new ApiError(400, `No friend with ${friendUsername} username exists `)
+
+    const checkExistingFriendShip = await Friend.findOne({
+        $or: [
+            { userId: user._id, friendId: friendId },
+            { userId: friendId, friendId: user._id }
+        ]
+    })
+
+    if (!checkExistingFriendShip) {
+        throw new ApiError(403, [{ status: 403, message: "You are not authorized to remove this friend or friendship does not exist" }]);
+    }
+
+    const removeYourFriend = await Friend.deleteMany({
+        $or: [
+            { userId: user._id, friendId: friendId },
+            { userId: friendId, friendId: user._id }
+        ]
+    })
+    if (!removeYourFriend || removeFriend.deletedCount == 0 ) throw new ApiError(400, [{ status: 400, message: "Unable to remove your friend" }])
+
+    //Here will call the remove chat function to remove all chat details
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(200, "Friend Removed Successfully")
+        )
+
+})
 export {
     sendFriendRequest,
     fetchPendingRequest,
-    friendRequestStatus
+    friendRequestStatus,
+    fetchAcceptedFriendList,
+    removeFriend
 }
