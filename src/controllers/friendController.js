@@ -12,11 +12,13 @@ const sendFriendRequest = asyncHandler(async (req, res) => {
 
     if (!user) throw new ApiError(401, [{ status: 401, message: "User unauthorized" }])
 
-    const { friendUsername } = req.body
+    const {friendUsername} = req.body
+
     if (!friendUsername) throw new ApiError(400, [{ status: 400, message: "No username Provided" }])
 
     const filteredUsername = friendUsername.trim().toLowerCase()
-    if (filteredUsername === '') throw new ApiError(400, "No username Provided", [{ status: 400, message: "Enter a username" }])
+
+    if (filteredUsername === '') throw new ApiError(400, "No username Provided", [{status: 400,message: "Enter a username" }])
 
     const receiverUser = await User.findOne({ username: filteredUsername }).select('_id username')
 
@@ -103,10 +105,11 @@ const fetchPendingRequest = asyncHandler(async (req, res) => {
         )
 })
 
-const friendRequestStatus = asyncHandler(async (req, res) => {
+const friendRequestAction = asyncHandler(async (req, res) => {
     const user = req.user //Pupi is the user
     if (!user) throw new ApiError(400, [{ status: 400, message: "User Unauthorized" }])
-
+    
+    console.log("fetching pending request")
     const { responseFromUser, usernameOfUserWhoSentFriendRequest } = req.body //Pupuman is the one who sent request
 
     if (!usernameOfUserWhoSentFriendRequest) throw new ApiError(400, "No Response from User", [{ status: 400, message: "No response from user" }])
@@ -115,7 +118,7 @@ const friendRequestStatus = asyncHandler(async (req, res) => {
 
     if (responseFromUser === false) {
         await Friend.updateMany({
-            $or: [
+            $and: [
                 { userId: user._id, friendId: requestSenderData._id },
                 { userId: requestSenderData._id, friendId: user._id }
             ]
@@ -260,7 +263,7 @@ const removeFriend = asyncHandler(async (req, res) => {
 export {
     sendFriendRequest,
     fetchPendingRequest,
-    friendRequestStatus,
+    friendRequestAction,
     fetchAcceptedFriendList,
     removeFriend
 }
