@@ -1,32 +1,70 @@
 import React, { useEffect, useState } from 'react'
+import {createPortal} from 'react-dom'
 import { pendingFriendRequestAtom , confirmedFriends } from '../../atoms/friendAtom'
-import { useAtom , useAtomValue} from 'jotai'
+import { useAtom , useAtomValue, useSetAtom} from 'jotai'
 import { friendReq } from '../../auth_api/friendRequest.auth.api'
 import { Check , X , Send , UserRoundPlus, Search  } from 'lucide-react'
 
 
 const ToggledRequestTab = () => {
-
+  const setConfirmedAtom = useSetAtom(confirmedFriends)
   const [friendNameList,setPendingFriendNameList] = useAtom(pendingFriendRequestAtom)
+  const [usernameofFriend , setUserNameOfFriend] = useState("")
+
+  const sendFriendRequestHandler = async (friendUsername)=>{
+    try {
+      console.log(friendUsername)
+      const response = await friendReq.sendFriendRequest(friendUsername)
+      console.log("response at sendFriendRequestHandler", response)
+    } catch (error) {
+      console.log("ERROR at send Friend Request Handler" , error)
+    }
+  }
+
+  const acceptFriendHandler = async (userRes , username) => {
+    try {
+      const friendRes = await friendReq.friendReqAction(userRes , username)
+      
+    } catch (error) { 
+      console.log("friendReq err" , error)
+    }
+
+  }
+
+  const rejectFriendHandler  = async (userRes , username)=>{
+    try {
+      const friendRes = await friendReq.friendReqAction(userRes , username)
+      console.log("rejectFriendRes" , friendRes)
+    } catch (error) {
+      console.log("friendReqReject err" , error)
+    }
+  }
+
+ 
+
   useEffect(()=>{
     try {
       ( async ()=>{  
-        const response = await friendReq.checkPendingFriendRequest()
-        setPendingFriendNameList(response)
+        const friendRes = await friendReq.checkPendingFriendRequest()
+        setPendingFriendNameList(()=>friendRes.map((user)=>user.usernames))
+        console.log("pendingFriend",) 
        })();
     } catch (error) {
       console.log("error" , error)
     }
   },[])
   
+
   return (
     <div className='absolute w-[25vh] h-[30vh] rounded-lg ease-in bg-neutral-900 top-10 right-0'>
       <div className='w-full lg:h-[15%] flex p-1 flex-row justify-between'>
         <input type="text" className='w-[80%] h-full rounded-md bg-neutral-600 outline-none border-0 
                             text-white font-bold indent-2
-                          ' placeholder='Enter user username' />
+                          ' placeholder='Enter user username'
+                          onChange={(e)=>setUserNameOfFriend(e.target.value)}
+                           />
         <div className='w-[20%] h-full text-white flex items-center justify-center'>
-          <Send />
+          <Send onClick={()=>sendFriendRequestHandler(usernameofFriend)}/>
         </div>
       </div>
       <div className='w-full h-full '>
@@ -34,10 +72,9 @@ const ToggledRequestTab = () => {
         <div className='w-full h-full p-1 '>
           { friendNameList && friendNameList.map((friend,index)=>(
             <div key={index} className='w-full h-[10%] flex lg:flex-row items-center justify-around text-white pixelify-sans-okish font-bold bg-neutral-600 text-center'>
-                <span className='lg:w-[60%] h-full'><p>{friend.username}</p></span>
-                <div className='lg:w-[10%] h-full flex items-center justify-center'><X color='red'/></div>
-                <div className='lg:w-[10%] h-full flex items-center justify-center '><Check color='#6ed750'/></div>
-
+                <span className='lg:w-[60%] h-full'><p>{friend}</p></span>
+                <div className='lg:w-[10%] h-full flex items-center justify-center hover:scale-110 ease-in font-bold '><Check color='#6ed750' onClick={() => acceptFriendHandler(true , friend)}/></div>
+                <div className='lg:w-[10%] h-full flex items-center justify-center hover:scale-110 ease-in font-bold '><X color='red'  onClick={()=>rejectFriendHandler(false , friend)}/></div>
             </div>
           ))}
         </div>
@@ -47,6 +84,7 @@ const ToggledRequestTab = () => {
 }
 
 function SideChatBar() {
+
   const confirmedFriendsList = useAtomValue(confirmedFriends)
   const [toggleRequestTab, setToggleRequestTab] = useState(false)
 
@@ -82,7 +120,7 @@ function SideChatBar() {
               <div key={index} className='w-full pixelify-sans-okish lg:h-[5rem] border-1 border-white/20  mb-[1px]  text-center lg:text-xl
                         hover:cursor-pointer hover:bg-white/25 transition-all
                       text-white font-normal bg-neutral-800'>
-                <span className='lg:w-full lg:h-full justify-center flex lg:flex-row items-center'><p className='text-white'>{friend.username}</p></span>
+                <span className='lg:w-full lg:h-full justify-center flex lg:flex-row items-center'><p className='text-white'>{friend}</p></span>
               </div>
             ))}
           </div>
