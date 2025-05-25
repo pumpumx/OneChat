@@ -4,6 +4,7 @@ import { ApiResponse } from "../utils/apiResponse.js";
 import { Friend } from "../models/friend.model.js";
 import { User } from '../models/user.model.js'
 import validator from 'validator'
+import { FriendChat } from "../models/friendChat.model.js";
 const sendFriendRequest = asyncHandler(async (req, res) => {
 
     const user = req.user;
@@ -46,15 +47,8 @@ const sendFriendRequest = asyncHandler(async (req, res) => {
         status: 'Pending'
     })
 
-    const friendRequestForSender = new Friend({
-        userId: user._id,
-        friendId: receiverUser._id,
-        status: 'Pending'
-    })
 
     await friendRequestForReciever.save()
-    await friendRequestForSender.save()
-
 
     return res
         .status(200)
@@ -131,15 +125,33 @@ const friendRequestStatus = asyncHandler(async (req, res) => {
     }
 
     if (responseFromUser === true) {
-        await Friend.updateMany({
-            $or: [
-                { userId: user._id, friendId: requestSenderData._id },
-                { userId: requestSenderData._id, friendId: user._id }
-            ]
+
+        const friendRequestForReciever = new Friend({
+            userId: requestSenderData._id,
+            friendId: user._id,
+            status: 'Accepted'
+        })
+
+        await friendRequestForReciever.save()
+
+        await Friend.findOneAndUpdate({
+            $and: [{userId: user._id} , {friendId:requestSenderData._id}]
         },
             {
                 $set: { status: "Accepted" }
             })
+
+
+        const creatingUsersPersonalChat = FriendChat(
+            {
+                participants: [
+                    user._id , requestSenderData._id 
+                ]
+            }
+        )
+
+        await creatingUsersPersonalChat.save()
+
         return res
             .status(200)
             .json(
@@ -172,7 +184,7 @@ const fetchAcceptedFriendList = asyncHandler(async (req, res) => {
         },
         {
             $project: {
-                username: '$FriendList.username'
+                username: '$FriendList.username',
             }
         }
     ])
@@ -214,7 +226,7 @@ const removeFriend = asyncHandler(async (req, res) => {
             { userId: friendId, friendId: user._id }
         ]
     })
-    if (!removeYourFriend || removeFriend.deletedCount == 0 ) throw new ApiError(400, [{ status: 400, message: "Unable to remove your friend" }])
+    if (!removeYourFriend || removeFriend.deletedCount == 0) throw new ApiError(400, [{ status: 400, message: "Unable to remove your friend" }])
 
     //Here will call the remove chat function to remove all chat details
     return res
@@ -224,6 +236,7 @@ const removeFriend = asyncHandler(async (req, res) => {
         )
 
 })
+
 export {
     sendFriendRequest,
     fetchPendingRequest,

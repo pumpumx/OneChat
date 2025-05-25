@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const friendChatSchema = new mongoose.Schema({
     participants:[{
         type:mongoose.Types.ObjectId,
-        ref:"User"
+        ref:"User",
+        required:true,
     }],
     messages:[{
         sender:{
@@ -13,7 +14,7 @@ const friendChatSchema = new mongoose.Schema({
         content:{
             type:String,
         },
-        timestamps:{
+        timestamp:{
             type:Date,
             default:Date.now
         }
