@@ -26,7 +26,8 @@ class friend{
         const response = await axios.get("http://localhost:3000/api/v1/friend/fetch-friend-list" ,{
             withCredentials: true   
         })
-        const jsonRes = response.data.message
+
+        const jsonRes = response.data.message.friendList
         console.log("json Res" , jsonRes)
         return jsonRes;
     }
@@ -35,6 +36,7 @@ class friend{
         const response = await axios.post("http://localhost:3000/api/v1/friend/friend-request-action" , {responseFromUser , usernameOfUserWhoSentFriendRequest} , {
             withCredentials:true
         })
+        console.log("Lets goooo")
         const jsonRes  =  response.data.message
         console.log("jsonRes",response.data)
         return jsonRes

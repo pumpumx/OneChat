@@ -85,13 +85,26 @@ const ToggledRequestTab = () => {
 
 function SideChatBar() {
 
-  const confirmedFriendsList = useAtomValue(confirmedFriends)
+  const [confirmedFriendsList,setConfirmedAtomList] = useAtom(confirmedFriends)
   const [toggleRequestTab, setToggleRequestTab] = useState(false)
 
   const requestToggleHandler = () => {
     setToggleRequestTab(!toggleRequestTab)
   }
 
+
+  useEffect(()=>{
+    (async ()=>{
+      try {
+        const response = await friendReq.fetchAcceptedFriends()
+        console.log("Is data loading>")
+        const acceptedFriends = response.map((user)=>user.username)
+        setConfirmedAtomList(acceptedFriends)
+      } catch (error) {
+        console.log("Error" , error)
+      }
+    })();
+  },[])
  
   return (
     <div className='lg:w-[30%] h-full bg-red-400'> {/* Private chat with friends feature */}
