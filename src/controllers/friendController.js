@@ -5,6 +5,7 @@ import { Friend } from "../models/friend.model.js";
 import { User } from '../models/user.model.js'
 import validator from 'validator'
 import { FriendChat } from "../models/friendChat.model.js";
+
 const sendFriendRequest = asyncHandler(async (req, res) => {
 
     const user = req.user;
@@ -34,10 +35,10 @@ const sendFriendRequest = asyncHandler(async (req, res) => {
 
     if (existingRequest) {
         if (existingRequest.status === 'Pending') {
-            throw new ApiError(400, [{ status: 400, message: "Request already sent" }])
+            throw new ApiError(400,"Request sent" [{ status: 400, message: "Request already sent" }])
         }
         else if (existingRequest.status === 'Accepted') {
-            throw new ApiError(400, [{ status: 400, message: "You are already friends" }])
+            throw new ApiError(400,"you are already friends",[{ status: 400, message: "You are already friends" }])
         }
     }
 
@@ -58,34 +59,40 @@ const sendFriendRequest = asyncHandler(async (req, res) => {
 
 })
 
+export const fetchPendingRequestCoreLogic = async (userId)=>{
+    
+    if (!userId) throw new ApiError(400, [{ status: 400, message: "User Unauthorized" }])
+
+        const allPendingRequest = await Friend.aggregate([
+            {
+                $match: { userId: userId, status: 'Pending' }
+            },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'friendId',
+                    foreignField: '_id',
+                    as: 'friendDetails'
+                }
+            },
+            {
+                $unwind: "$friendDetails"
+            },
+            {
+                $project: {
+                    _id: 1,
+                    status: 1,
+                    usernames: '$friendDetails.username'
+                }
+            }
+        ])
+    return allPendingRequest;
+}
+
 const fetchPendingRequest = asyncHandler(async (req, res) => {
     const user = req.user;
 
-    if (!user) throw new ApiError(400, [{ status: 400, message: "User Unauthorized" }])
-
-    const allPendingRequest = await Friend.aggregate([
-        {
-            $match: { userId: user._id, status: 'Pending' }
-        },
-        {
-            $lookup: {
-                from: 'users',
-                localField: 'friendId',
-                foreignField: '_id',
-                as: 'friendDetails'
-            }
-        },
-        {
-            $unwind: "$friendDetails"
-        },
-        {
-            $project: {
-                _id: 1,
-                status: 1,
-                username: "$friendDetails.username",
-            }
-        }
-    ])
+    const allPendingRequest = await fetchPendingRequestCoreLogic(user._id)
 
     if (!allPendingRequest) throw new ApiError(400, [{ status: 400, message: "Error Fetching Pending Requests" }])
 
@@ -125,9 +132,22 @@ const friendRequestStatus = asyncHandler(async (req, res) => {
     }
 
     if (responseFromUser === true) {
+        
+        const pendingFreindRequestValidation = await fetchPendingRequestCoreLogic(user._id)
+
+        console.log("pending" , pendingFreindRequestValidation)
+
+        const requestBool = pendingFreindRequestValidation.map((val)=>{
+            const usernameAvailable = val.username
+            if(usernameAvailable === usernameOfUserWhoSentFriendRequest.trim()){
+                return true;
+            }
+        }) || null
+
+        if(!requestBool) throw new ApiError(400 ,"You cant be friends with anyone",[{messaage:"Trying to be friends with any user??? Desperation?? No one wants to be your friend??  Can't happen sweetheart!! Muah."}])
 
         const friendRequestForReciever = new Friend({
-            userId: requestSenderData._id,
+            userId: requestSenderData._id,  
             friendId: user._id,
             status: 'Accepted'
         })
