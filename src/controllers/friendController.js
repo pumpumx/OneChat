@@ -10,22 +10,20 @@ const sendFriendRequest = asyncHandler(async (req, res) => {
 
     const user = req.user;
 
-    if (!user) throw new ApiError(401, [{ status: 401, message: "User unauthorized" }])
+    if (!user) throw new ApiError(401, [{ message: "User unauthorized" }])
 
-    const {friendUsername} = req.body
+    const { friendUsername } = req.body
 
     if (!friendUsername) throw new ApiError(400, [{ status: 400, message: "No username Provided" }])
 
     const filteredUsername = friendUsername.trim().toLowerCase()
-
-    if (filteredUsername === '') throw new ApiError(400, "No username Provided", [{status: 400,message: "Enter a username" }])
+    if (filteredUsername === '') throw new ApiError(400, "No username Provided", [{ message: "Enter a username" }])
 
     const receiverUser = await User.findOne({ username: filteredUsername }).select('_id username')
-
-    if (!receiverUser) throw new ApiError(404, `No user with username ${filteredUsername} found`, [{ status: 404, message: `No user with username ${filteredUsername} found` }])
+    if (!receiverUser) throw new ApiError(404, `No user with username found`, [{ message: `No user with username found` }])
 
     if (receiverUser._id.equals(user._id)) {
-        throw new ApiError(400, [{ status: 400, message: "You cannot send a friend request to yourself" }]);
+        throw new ApiError(400, "You cannot send request to yourself", [{ message: "You cannot send a friend request to yourself" }]);
     }
 
     const existingRequest = await Friend.findOne({
@@ -37,10 +35,10 @@ const sendFriendRequest = asyncHandler(async (req, res) => {
 
     if (existingRequest) {
         if (existingRequest.status === 'Pending') {
-            throw new ApiError(400,"Request sent" [{ status: 400, message: "Request already sent" }])
+            throw new ApiError(400, "Request sent", [{ status: 400, message: "Request already sent" }])
         }
         else if (existingRequest.status === 'Accepted') {
-            throw new ApiError(400,"you are already friends",[{ status: 400, message: "You are already friends" }])
+            throw new ApiError(400, "you are already friends", [{ message: "You are already friends" }])
         }
     }
 
@@ -61,33 +59,33 @@ const sendFriendRequest = asyncHandler(async (req, res) => {
 
 })
 
-export const fetchPendingRequestCoreLogic = async (userId)=>{
-    
+export const fetchPendingRequestCoreLogic = async (userId) => {
+
     if (!userId) throw new ApiError(400, [{ status: 400, message: "User Unauthorized" }])
 
-        const allPendingRequest = await Friend.aggregate([
-            {
-                $match: { userId: userId, status: 'Pending' }
-            },
-            {
-                $lookup: {
-                    from: 'users',
-                    localField: 'friendId',
-                    foreignField: '_id',
-                    as: 'friendDetails'
-                }
-            },
-            {
-                $unwind: "$friendDetails"
-            },
-            {
-                $project: {
-                    _id: 1,
-                    status: 1,
-                    usernames: '$friendDetails.username'
-                }
+    const allPendingRequest = await Friend.aggregate([
+        {
+            $match: { userId: userId, status: 'Pending' }
+        },
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'friendId',
+                foreignField: '_id',
+                as: 'friendDetails'
             }
-        ])
+        },
+        {
+            $unwind: "$friendDetails"
+        },
+        {
+            $project: {
+                _id: 1,
+                status: 1,
+                usernames: '$friendDetails.username'
+            }
+        }
+    ])
     return allPendingRequest;
 }
 
@@ -108,7 +106,7 @@ const fetchPendingRequest = asyncHandler(async (req, res) => {
 const friendRequestAction = asyncHandler(async (req, res) => {
     const user = req.user //Pupi is the user
     if (!user) throw new ApiError(400, [{ status: 400, message: "User Unauthorized" }])
-    
+
     console.log("fetching pending request")
     const { responseFromUser, usernameOfUserWhoSentFriendRequest } = req.body //Pupuman is the one who sent request
 
@@ -118,7 +116,7 @@ const friendRequestAction = asyncHandler(async (req, res) => {
 
     if (responseFromUser === false) {
         await Friend.updateMany({
-            $and: [
+            $or: [
                 { userId: user._id, friendId: requestSenderData._id },
                 { userId: requestSenderData._id, friendId: user._id }
             ]
@@ -135,22 +133,22 @@ const friendRequestAction = asyncHandler(async (req, res) => {
     }
 
     if (responseFromUser === true) {
-        
+
         const pendingFreindRequestValidation = await fetchPendingRequestCoreLogic(user._id)
 
-        console.log("pending" , pendingFreindRequestValidation)
+        console.log("pending", pendingFreindRequestValidation)
 
-        const requestBool = pendingFreindRequestValidation.map((val)=>{
+        const requestBool = pendingFreindRequestValidation.map((val) => {
             const usernameAvailable = val.username
-            if(usernameAvailable === usernameOfUserWhoSentFriendRequest.trim()){
+            if (usernameAvailable === usernameOfUserWhoSentFriendRequest.trim()) {
                 return true;
             }
         }) || null
 
-        if(!requestBool) throw new ApiError(400 ,"You cant be friends with anyone",[{messaage:"Trying to be friends with any user??? Desperation?? No one wants to be your friend??  Can't happen sweetheart!! Muah."}])
+        if (!requestBool) throw new ApiError(400, "You cant be friends with anyone", [{ messaage: "Trying to be friends with any user??? Desperation?? No one wants to be your friend??  Can't happen sweetheart!! Muah." }])
 
         const friendRequestForReciever = new Friend({
-            userId: requestSenderData._id,  
+            userId: requestSenderData._id,
             friendId: user._id,
             status: 'Accepted'
         })
@@ -158,7 +156,7 @@ const friendRequestAction = asyncHandler(async (req, res) => {
         await friendRequestForReciever.save()
 
         await Friend.findOneAndUpdate({
-            $and: [{userId: user._id} , {friendId:requestSenderData._id}]
+            $and: [{ userId: user._id }, { friendId: requestSenderData._id }]
         },
             {
                 $set: { status: "Accepted" }
@@ -168,7 +166,7 @@ const friendRequestAction = asyncHandler(async (req, res) => {
         const creatingUsersPersonalChat = FriendChat(
             {
                 participants: [
-                    user._id , requestSenderData._id 
+                    user._id, requestSenderData._id
                 ]
             }
         )
@@ -229,8 +227,11 @@ const removeFriend = asyncHandler(async (req, res) => {
     const { friendUsername } = req.body
     if (!friendUsername || !validator.isAlphanumeric(friendUsername)) throw new ApiError(400, [{ status: 400, messaage: "Friend to be removed not found" }])
 
-    const friendId = await User.find({ username: friendUsername }).select("_id")
-    if (!friendId) throw new ApiError(400, `No friend with ${friendUsername} username exists `)
+    const friend = await User.findOne({ username: friendUsername }).select("_id")
+    if (!friend) throw new ApiError(400, `No friend with ${friendUsername} username exists `)
+
+    const friendId = friend._id
+    if(friendId.equals(user._id)) throw new ApiError(400 , "You cannot remove yourself")
 
     const checkExistingFriendShip = await Friend.findOne({
         $or: [
@@ -243,15 +244,25 @@ const removeFriend = asyncHandler(async (req, res) => {
         throw new ApiError(403, [{ status: 403, message: "You are not authorized to remove this friend or friendship does not exist" }]);
     }
 
-    const removeYourFriend = await Friend.deleteMany({
-        $or: [
-            { userId: user._id, friendId: friendId },
-            { userId: friendId, friendId: user._id }
-        ]
-    })
-    if (!removeYourFriend || removeFriend.deletedCount == 0) throw new ApiError(400, [{ status: 400, message: "Unable to remove your friend" }])
+    const [removeYourFriend, removeThereChat] = await Promise.all([
+        Friend.deleteMany({
+            $or: [
+                { userId: user._id, friendId: friendId },
+                { userId: friendId, friendId: user._id }
+            ]
+        }),
+        FriendChat.deleteMany({
+           participants: {$all : [user._id , friendId]},
+           $expr : {$eq : [{$size: "$participants"},2]}
+        })
+    ]);
 
-    //Here will call the remove chat function to remove all chat details
+    if (!removeYourFriend || removeYourFriend.deletedCount == 0)
+        throw new ApiError(400, [{ status: 400, message: "Unable to remove your friend" }]);
+
+    if (!removeThereChat || removeThereChat.deletedCount == 0)
+        throw new ApiError(400, [{ status: 400, message: "Unable to remove your friend" }]);
+
     return res
         .status(200)
         .json(

@@ -51,7 +51,7 @@ function LoginForm() {
     }
     return (
 
-        <div className='w-[90%] h-full bg-white p-10  rounded-xl'>
+        <div className='w-[90%] h-full bg-white p-10  rounded-xl'>  
             <h1 className='text-4xl h-[10%] a'>Sign in</h1>
 
             <form onSubmit={handleSubmit(onSubmit)}

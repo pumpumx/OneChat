@@ -50,7 +50,6 @@ const ToggledRequestTab = () => {
   }
 
 
-
   useEffect(() => {
     try {
       (async () => {
@@ -61,7 +60,7 @@ const ToggledRequestTab = () => {
     } catch (error) {
       console.log("error", error)
     }
-  }, [friendNameList])
+  }, [])
 
 
   return (
@@ -102,6 +101,16 @@ function SideChatBar() {
   }
 
 
+  const removeFriendHandler = async (username) =>{
+    try {
+      const response = await friendReq.removeFriend(username)
+      if(response.status ===200){
+        toast.success(`${username} removed successfully`)
+      }
+    } catch (error) {
+      toast.error("Cannot remove this user , ig he got superpowers.")
+    }
+  }
   useEffect(() => {
     (async () => {
       try {
@@ -112,7 +121,7 @@ function SideChatBar() {
         console.log("Error", error)
       }
     })();
-  }, [confirmedFriends])
+  }, [])
 
   return (
     <div className='lg:w-[30%] h-full bg-red-400'> {/* Private chat with friends feature */}
@@ -142,7 +151,7 @@ function SideChatBar() {
                         hover:cursor-pointer hover:bg-white/25 transition-all
                       text-white font-normal bg-neutral-800 flex items-center justify-center'>
                 <span className='lg:w-[80%] lg:h-full justify-center flex lg:flex-row items-center'><p className='text-white'>{friend}</p></span>
-                <span className='lg:w-[20%]'><Trash2 color='red' size={22} /></span>
+                <span className='lg:w-[20%]'><Trash2 color='red' size={22} onClick={()=>removeFriendHandler(friend)}/></span>
               </div>
             ))}
           </div>

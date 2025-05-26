@@ -11,8 +11,6 @@ const verifyJWT = asyncHandler(async (req , _ , next)=>{
 
     console.log("accessToken" , accessToken)
 
-   
-
     if(!accessToken) throw new ApiError(400 , "Invalid Access Token")
 
     const decodedAccessToken = jwt.verify(accessToken , process.env.ACCESS_TOKEN_SECRET)

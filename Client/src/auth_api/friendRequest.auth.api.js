@@ -40,7 +40,19 @@ class friend{
         const jsonRes  =  response.data
         console.log("jsonRes",response.data)
         return jsonRes
-    } 
+    }
+    
+    async removeFriend(friendUsername){
+        const response = await axios.delete("http://localhost:3000/api/v1/friend/remove-friend" , {
+            data:{friendUsername:friendUsername},
+            withCredentials:true,
+
+        })
+        console.log("remove res" , response)
+        return response
+
+    }
+    
 }
 
 const friendReq = new friend()
