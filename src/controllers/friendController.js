@@ -3,7 +3,7 @@ import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { Friend } from "../models/friend.model.js";
 import { User } from '../models/user.model.js'
-import validator from 'validator'
+import validator from 'validator';
 import { FriendChat } from "../models/friendChat.model.js";
 
 const sendFriendRequest = asyncHandler(async (req, res) => {
@@ -225,7 +225,7 @@ const removeFriend = asyncHandler(async (req, res) => {
     if (!user) throw new ApiError(400, [{ status: 400, messaage: "User Unauthorized" }])
 
     const { friendUsername } = req.body
-    if (!friendUsername || !validator.isAlphanumeric(friendUsername)) throw new ApiError(400, [{ status: 400, messaage: "Friend to be removed not found" }])
+    if (!friendUsername && !validator.isAlphanumeric(friendUsername)) throw new ApiError(400, [{ status: 400, messaage: "Friend to be removed not found" }])
 
     const friend = await User.findOne({ username: friendUsername }).select("_id")
     if (!friend) throw new ApiError(400, `No friend with ${friendUsername} username exists `)
@@ -270,6 +270,9 @@ const removeFriend = asyncHandler(async (req, res) => {
         )
 
 })
+
+
+
 
 export {
     sendFriendRequest,

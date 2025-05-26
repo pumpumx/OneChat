@@ -49,6 +49,9 @@ const ToggledRequestTab = () => {
     }
   }
 
+  const friendsChatFetch = async ()=>{
+    
+  }
 
   useEffect(() => {
     try {

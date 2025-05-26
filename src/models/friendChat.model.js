@@ -14,7 +14,7 @@ const friendChatSchema = new mongoose.Schema({
         content:{
             type:String,
         },
-        timestamp:{
+        senderTimestamp:{
             type:Date,
             default:Date.now
         }
