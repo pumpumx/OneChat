@@ -10,9 +10,7 @@ import { useSetAtom } from 'jotai'
 import { authMethod } from '../../../auth_api/user.auth.js'
 import { useNavigate } from 'react-router-dom'
 import { setUserToLocalStorage } from '../../../auth_api/localStorage.user.js'
-import Notify from '../../Utils/Notify.jsx'
 import { loginAtom } from '../../../atoms/atom.js'
-
 function LoginForm() {
     
     const setLoginAtom = useSetAtom(loginAtom)
@@ -31,28 +29,21 @@ function LoginForm() {
         mode: "onChange",
         resolver: yupResolver(loginSchema)
     })
- 
+
 
     const onSubmit = async (data) => {  
         try {
             const response = await authMethod.loginUser(data)
+            
             if (response && response.status == 200) {
                 setLoginAtom(response.data)
                 setUserToLocalStorage(response.data) 
                 setTimeout(()=>{
                         navigate('/app')
                 },1000)
-                {createPortal(
-                    <Notify message={`${response.data}`}/>,
-                    document.body
-                )}
             }
             else{
                 setLoginAtom(null)
-                {createPortal(
-                    <Notify message={`Incorrect Password`}/>,
-                    document.body
-                )}
             }
         } catch (error) {
             console.log("Error occured at Login user", error)
@@ -86,7 +77,6 @@ function LoginForm() {
                 </button>
 
                     <p className='text-sm font-semibold hover:text-green-400 text-gray-800 cursor-pointer'>Forgot Your Password?</p>
-
             </form>
         </div>
     )

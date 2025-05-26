@@ -37,7 +37,7 @@ class friend{
             withCredentials:true
         })
         console.log("Lets goooo")
-        const jsonRes  =  response.data.message
+        const jsonRes  =  response.data
         console.log("jsonRes",response.data)
         return jsonRes
     } 

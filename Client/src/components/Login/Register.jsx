@@ -2,13 +2,11 @@ import React from 'react'
 import { useAtomValue } from 'jotai'
 import RegisterForm from './registerComponents/RegisterForm'
 import { userAtom} from '../../atoms/atom.js'
-import Notify from '../Utils/Notify.jsx'
 function Register() {
   const registerAtomVal = useAtomValue(userAtom)
   console.log("register: ",registerAtomVal)
   return (
     <>
-      {registerAtomVal && <Notify label={true} message={`${registerAtomVal.data}`}  />}
       <div className='w-full h-screen flex items-center justify-around bg-black px-50 py-10 '>
         <div className='absolute  '>
 
