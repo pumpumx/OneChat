@@ -5,7 +5,6 @@ import { chatHistory } from '../../atoms/chatAtom.js';
 function ChatHistory() {
   const [chatHistoryAtom] = useAtom(chatHistory);
   const [filteredHistory, setFilteredHistory] = useState([]);
-  console.log("hist" , chatHistoryAtom)
   useEffect(() => {
     //Run that function here
     setFilteredHistory([...chatHistoryAtom]); // No nested arrays

@@ -18,13 +18,15 @@
                 if(!usernameToWhomMessageWillBeSent) throw new ApiError(404, "Can't send data because no username exists")
                     
                     let p2p;
+                    const updatedMessage = `${user.username} : ${data}`
+
                     for(let [uId , sId] of userSocketMap.entries()){
                         if(uId === usernameToWhomMessageWillBeSent){
                             p2p = sId
                         } 
                     }
 
-                    io.to(p2p).emit("recieve_private", {data})
+                    io.to(p2p).emit("recieve_private", {updatedMessage})
             })
 
                 socket.on('disconnect', () => {

@@ -22,5 +22,8 @@ const friendChatSchema = new mongoose.Schema({
 },{timestamps:true})
 
 friendChatSchema.index({participants:1})
+friendChatSchema.path('participants').validate(function(arr){
+    return arr.length === 2;
+})
 
 export const FriendChat = mongoose.model("FriendChat",friendChatSchema)
