@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { Suspense, useState } from 'react'
 import ChatMessage from './ChatMessage'
 import Navbar from './ChatNav.jsx'
 import SideChatBar from './sideChatBar.js'
 import { ToastContainer } from 'react-toastify'
+import PersonalChatMessage from './PersonalChatMessage.jsx'
+import Spinner from '../Utils/Spinner.jsx'
 function MainChat() {
+  const [roomOrPersonal , setRoomOrPersonal] = useState(false)
 
 
   return (
@@ -25,7 +28,9 @@ function MainChat() {
               <Navbar />
             </div>
             <div className='lg:w-full lg:h-[90%] '>
-              <ChatMessage />
+              <Suspense fallback={<Spinner/>}>
+              {roomOrPersonal ? <ChatMessage/>:<PersonalChatMessage/>}
+              </Suspense>
             </div>
           </div>
         </div>
