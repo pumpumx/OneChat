@@ -11,6 +11,7 @@ import { authMethod } from '../../../auth_api/user.auth.js'
 import { useNavigate } from 'react-router-dom'
 import { setUserToLocalStorage } from '../../../auth_api/localStorage.user.js'
 import { loginAtom } from '../../../atoms/atom.js'
+import { toast } from 'react-toastify'
 function LoginForm() {
     
     const setLoginAtom = useSetAtom(loginAtom)
@@ -36,8 +37,9 @@ function LoginForm() {
             const response = await authMethod.loginUser(data)
             
             if (response && response.status == 200) {
-                setLoginAtom(response.data)
+                setLoginAtom(response.data.message)
                 setUserToLocalStorage(response.data) 
+                toast.success("Login Successfull")
                 setTimeout(()=>{
                         navigate('/app')
                 },1000)

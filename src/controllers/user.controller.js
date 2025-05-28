@@ -92,6 +92,7 @@ const loginUser = asyncHandler(async (req, res) => {
     const tokens = await generateTokens(user._id)
     if (!tokens.accessToken || !tokens.refreshToken) throw new ApiError(500, "Tokens does not exist")
     const accessToken = tokens.accessToken
+    const refreshToken = tokens.refreshToken
     const options = {
         httpOnly: true,
         secure: false,

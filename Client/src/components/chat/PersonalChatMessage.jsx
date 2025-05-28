@@ -55,8 +55,8 @@ function ChatMessage() {
               />
             </div>
             <div className='lg:w-[5%] lg:h-full flex lg:flex-row items-center justify-center'>
-            <button className='rounded-md hover:bg-[#6cbe6cea] w-[70%] h-full cursor-pointer flex items-center justify-center '
-              onClick={() => sendPrivateMessage(message)}
+            <button className='rounded-md  w-[70%] h-full cursor-pointer flex items-center justify-center '
+              onClick={() => sendPrivateMessage(message , username)}
             >{message.trim() === ''?<Mic color='gray'/>:<SendHorizontal color='gray'/>}</button>
             </div>            
           </div>

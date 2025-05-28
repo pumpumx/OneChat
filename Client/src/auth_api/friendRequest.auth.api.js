@@ -18,7 +18,6 @@ class friend{
             withCredentials:true
         })
         const jsonRes = response.data.message.allPendingRequest
-        console.log("json res" , jsonRes)
         return jsonRes;
     }
 
@@ -28,7 +27,6 @@ class friend{
         })
 
         const jsonRes = response.data.message.friendList
-        console.log("json Res" , jsonRes)
         return jsonRes;
     }
 

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { pendingFriendRequestAtom, confirmedFriends } from '../../atoms/friendAtom'
-import { useAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import { friendReq } from '../../auth_api/friendRequest.auth.api'
 import { Check, X, Send, UserRoundPlus, Search , Trash2 } from 'lucide-react'
 import { toast } from 'react-toastify'
+import { friendChattingWithData } from '../../atoms/friendAtom'
 import "react-toastify/dist/ReactToastify.css";
 
 const ToggledRequestTab = () => {
@@ -49,9 +50,6 @@ const ToggledRequestTab = () => {
     }
   }
 
-  const friendsChatFetch = async ()=>{
-    
-  }
 
   useEffect(() => {
     try {
@@ -96,6 +94,7 @@ const ToggledRequestTab = () => {
 
 function SideChatBar() {
 
+  const setFriendData = useSetAtom(friendChattingWithData)
   const [confirmedFriendsList, setConfirmedAtomList] = useAtom(confirmedFriends)
   const [toggleRequestTab, setToggleRequestTab] = useState(false)
 
@@ -114,6 +113,11 @@ function SideChatBar() {
       toast.error("Cannot remove this user , ig he got superpowers.")
     }
   }
+
+  const fetchPersnalUserChatHandler = (friend)=> {
+    setFriendData(friend)
+  }
+
   useEffect(() => {
     (async () => {
       try {
@@ -124,8 +128,9 @@ function SideChatBar() {
         console.log("Error", error)
       }
     })();
-  }, [])
+  }, [confirmedFriends])
 
+  
   return (
     <div className='lg:w-[30%] h-full bg-red-400'> {/* Private chat with friends feature */}
       <header className='w-full lg:h-[10%] bg-neutral-950 flex lg:flex-row items-center justify-between '>
@@ -152,7 +157,7 @@ function SideChatBar() {
             {confirmedFriendsList && confirmedFriendsList.map((friend, index) => (
               <div key={index} className='w-full pixelify-sans-okish lg:h-[5rem] border-1 border-white/20  mb-[1px]  text-center lg:text-xl
                         hover:cursor-pointer hover:bg-white/25 transition-all
-                      text-white font-normal bg-neutral-800 flex items-center justify-center'>
+                      text-white font-normal bg-neutral-800 flex items-center justify-center' onClick={()=> fetchPersnalUserChatHandler(friend)}>
                 <span className='lg:w-[80%] lg:h-full justify-center flex lg:flex-row items-center'><p className='text-white'>{friend}</p></span>
                 <span className='lg:w-[20%]'><Trash2 color='red' size={22} onClick={()=>removeFriendHandler(friend)}/></span>
               </div>
