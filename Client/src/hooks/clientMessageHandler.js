@@ -1,5 +1,5 @@
 import { clientSocket } from "./useServer.js";
-import { chatHistory, personalChatHistory } from "../atoms/chatAtom.js";
+import { chatHistory } from "../atoms/chatAtom.js";
 import { store } from "../atoms/store.js";
 import { chat } from "../auth_api/chat.auth.js";
 
@@ -8,24 +8,25 @@ const sendMessage = async (data) => {
     if (clientSocket && clientSocket.connected) {
         clientSocket.emit("send_message", (data))
         // Need to work on it tomorrow !!  //Lol i forgot what i had to work on it.
+
     }
     else {
         console.log("User Not Connected")
     }
 }
 
-const sendPrivateMessage = async (data,usernameToWhomMessageWillBeSent) =>{
-    console.log("sendPrivate" , usernameToWhomMessageWillBeSent , data)
-    if(clientSocket && clientSocket.connected){
-         const sendingMess = clientSocket.emit('send_private',{data,usernameToWhomMessageWillBeSent})
-         if(!sendingMess) return;
-            await chat.savePersonalMessage(usernameToWhomMessageWillBeSent , data)
+const sendPrivateMessage = async (data, usernameToWhomMessageWillBeSent) => {
+    console.log("inside private")
+    // await chat.savePersonalMessage(usernameToWhomMessageWillBeSent , data) uncomment it to open message saving for private communication
+    if (clientSocket && clientSocket.connected) {
+        clientSocket.emit('send_private', { data, usernameToWhomMessageWillBeSent })
     }
-    
 }
 
 const recieveMessage = () => {
     try {
+        console.log("Hey i am inside another you normal")
+
         if (clientSocket || clientSocket.connected) {
 
             clientSocket.on("recieve_data", (message) => {
@@ -45,15 +46,14 @@ const recieveMessage = () => {
     }
 }
 
-const recievePrivateMessage = ()=>{
-    if(clientSocket || clientSocket.connected){
-        clientSocket.on('recieve_private',(privateMessage)=>{
-            console.log("PrivateMessage" , privateMessage)
-            //Add the logix of setting the personalChat atom!!! 
-            const prev = store.get(personalChatHistory)
-            const updated = [...prev,privateMessage]
-            store.set(personalChatHistory , updated)
+const recievePrivateMessage = () => {
+    try {
+        console.log("Hey i am inside recievePrivate")
+        clientSocket.on('recieve_private', (privateMessage) => {
+            console.log("PrivateMessage", privateMessage)
         })
+    } catch (error) {
+        console.log("Error in recieve private message", error)
     }
 }
 

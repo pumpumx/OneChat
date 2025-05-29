@@ -25,6 +25,10 @@ function PersonalChatMessage() {
       rotateCross(rotateRef)
     }
   }
+
+  const privateMessageHandler = async ()=>{
+    sendPrivateMessage(message , friendData)
+  }
   useEffect(() => {
     clientConnectionInstance()
     return () => {
@@ -53,7 +57,7 @@ function PersonalChatMessage() {
             </div>
             <div className='lg:w-[5%] lg:h-full flex lg:flex-row items-center justify-center'>
             <button className='rounded-md  w-[70%] h-full cursor-pointer flex items-center justify-center '
-              onClick={() => sendPrivateMessage(message , friendData)}
+              onClick={() => privateMessageHandler()}
             >{message.trim() === ''?<Mic color='gray'/>:<SendHorizontal color='gray'/>}</button>
             </div>            
           </div>

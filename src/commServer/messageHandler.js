@@ -1,8 +1,5 @@
-
-    import { ApiError } from "../utils/apiError.js";
     import { userSocketMap } from "./server.js";
     const handleMessages = (socket, io, user) => {
-
         try {
             socket.on('send_message', (data) => {
 
@@ -15,23 +12,18 @@
 
             socket.on('send_private', ({ data, usernameToWhomMessageWillBeSent }) => { //This function takes handles private messaging !! 
 
-                    if(!usernameToWhomMessageWillBeSent) return;
-                    let p2p;
-                    const updatedMessage = `${user.username} : ${data}`
+                    const updatedMessage = `${user.username} : ${data}` 
 
-                    for(let [uId , sId] of userSocketMap.entries()){
-                        if(uId === usernameToWhomMessageWillBeSent){
-                            p2p = sId
-                        } 
-                    }
+                    const recipientSocket = userSocketMap.get(usernameToWhomMessageWillBeSent)
 
-                    io.to(p2p).emit("recieve_private", {updatedMessage})
+                    io.to(recipientSocket).emit("recieve_private", {data:updatedMessage})
                     //Add message batching here later on in order to improve performance 
             })
 
                 socket.on('disconnect', () => {
                     console.log(`User ${socket.id} disconnected`)
                 })
+
         } catch (error) {
             console.log("Error at handle Messages", error)
         }

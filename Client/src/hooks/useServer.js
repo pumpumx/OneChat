@@ -8,27 +8,29 @@ const clientConnectionInstance = async () => {
     const socketToken = await authMethod.socketAuth()
 
     if (!clientSocket || !clientSocket.connected) {
-      const socket = io("http://localhost:8000/" , {
-        auth: {token : socketToken},
+      const socket = io("http://localhost:8000/", {
+        auth: { token: socketToken },
         reconnectionAttempts: 5,
         timeout: 5000,
       })
 
       clientSocket = socket;
-       
+
     }
 
-    clientSocket.on("connect" , ()=>{
+    clientSocket.on("connect", () => {
       console.log("User Connected with id: ", clientSocket.id);
+      sendMessage();
+      recieveMessage();
+      recievePrivateMessage();
+      sendPrivateMessage();
     })
 
-    clientSocket.on("disconnect" , ()=>{
+
+    clientSocket.on("disconnect", () => {
       console.log("User disconnected with id: ", clientSocket.id);
     })
-    sendMessage();
-    recieveMessage();
-    recievePrivateMessage();
-    sendPrivateMessage();
+
   }
   catch (error) {
     console.log("Error while Client connection", error)

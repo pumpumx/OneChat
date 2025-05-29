@@ -115,7 +115,7 @@ function SideChatBar() {
   }
 
   const fetchPersnalFriendHandler = async (friend)=> {
-    console.log("friend " , friend)
+    console.log("friend at fetchPersonalFriendHandler" , friend)
      setFriendData(friend);
   }
 
@@ -130,7 +130,7 @@ function SideChatBar() {
         console.log("Error", error)
       }
     })();
-  }, [confirmedFriends , friendData])
+  }, [confirmedFriends , friendData , setFriendData])
 
   
   return (
