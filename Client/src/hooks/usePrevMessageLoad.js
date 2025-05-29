@@ -17,14 +17,17 @@ export function usePrevMessageLoad(){
 
 }
 
-// export function usePersonalChatLoad(){ //Fetching logic for presonal chats!!
+export function usePersonalChatLoad(){ //Fetching logic for presonal chats!!
  
-//     const setPersonalChatHistory = useSetAtom(personalChatHistory)
+    const setPersonalChatHistory = useSetAtom(personalChatHistory)
 
-//     useEffect(()=>{
-//         (async ()=>{
-//             const response = await 
-//         })
-//     },[setPersonalChatHistory])
-// }
+    useEffect(()=>{
+        (async ()=>{
+            const response = await chat.fetchPersonalMessage()
+            const messages = response.map((message)=>message.content)
+            console.log("Personal messages" , messages)
+            setPersonalChatHistory([...messages])
+        })
+    },[setPersonalChatHistory])
+}
 

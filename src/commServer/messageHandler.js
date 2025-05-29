@@ -15,8 +15,7 @@
 
             socket.on('send_private', ({ data, usernameToWhomMessageWillBeSent }) => { //This function takes handles private messaging !! 
 
-                if(!usernameToWhomMessageWillBeSent) throw new ApiError(404, "Can't send data because no username exists")
-                    
+                    if(!usernameToWhomMessageWillBeSent) return;
                     let p2p;
                     const updatedMessage = `${user.username} : ${data}`
 

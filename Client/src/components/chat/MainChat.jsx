@@ -6,7 +6,7 @@ import { ToastContainer } from 'react-toastify'
 import PersonalChatMessage from './PersonalChatMessage.jsx'
 import Spinner from '../Utils/Spinner.jsx'
 function MainChat() {
-  const [roomOrPersonal , setRoomOrPersonal] = useState(false)
+  const [roomOrPersonal ] = useState(false)
 
 
   return (

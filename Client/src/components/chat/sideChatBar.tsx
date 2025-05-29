@@ -114,8 +114,9 @@ function SideChatBar() {
     }
   }
 
-  const fetchPersnalUserChatHandler = (friend)=> {
+  const fetchPersnalFriendHandler = (friend)=> {
     setFriendData(friend)
+    console.log("friend data" , friend)
   }
 
   useEffect(() => {
@@ -155,9 +156,10 @@ function SideChatBar() {
         <div className='lg:w-full lg:h-[95%] bg-neutral-950'>
           <div className='w-full h-full '>
             {confirmedFriendsList && confirmedFriendsList.map((friend, index) => (
+                
               <div key={index} className='w-full pixelify-sans-okish lg:h-[5rem] border-1 border-white/20  mb-[1px]  text-center lg:text-xl
                         hover:cursor-pointer hover:bg-white/25 transition-all
-                      text-white font-normal bg-neutral-800 flex items-center justify-center' onClick={()=> fetchPersnalUserChatHandler(friend)}>
+                      text-white font-normal bg-neutral-800 flex items-center justify-center' onClick={()=> fetchPersnalFriendHandler(friend)}>
                 <span className='lg:w-[80%] lg:h-full justify-center flex lg:flex-row items-center'><p className='text-white'>{friend}</p></span>
                 <span className='lg:w-[20%]'><Trash2 color='red' size={22} onClick={()=>removeFriendHandler(friend)}/></span>
               </div>

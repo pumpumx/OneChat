@@ -5,22 +5,16 @@ function PersonalChatHistory() {
   const [chatHistory] = useAtom(personalChatHistory)
   const [filteredHistory, setFilteredHistory] = useState([]);
 
-  useEffect(() => {
-    //Run that fetch function here
-    
+  useEffect(() => {    
     setFilteredHistory([...chatHistory]); // No nested arrays
   }, [chatHistory]);
-
-  useEffect(() => {
-    setChatHistory(filteredHistory); // Save to localStorage  
-  }, [filteredHistory]);
 
   return (
     <>
       {filteredHistory.length > 0 ? (
         filteredHistory.map((val, index) => (
-          <div key={index} className='w-[100%] h-[2rem] text-white'>
-            <p className='font-medium'>{val}</p>
+          <div key={index} className='w-[100%] h-[2rem] text-9xl text-white'>
+            <p className='font-medium text-9xl '>{val}</p>
           </div>
         ))
       ) : (

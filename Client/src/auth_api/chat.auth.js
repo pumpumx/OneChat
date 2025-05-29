@@ -31,13 +31,28 @@ class chatApi{
             return error.data
         }
     }
-//     async saveAndFetchPersonalMessage(data , username){
-//         try {
-//             const response = await 
-//         } catch (error) {
-            
-//         }
-//     }
+    async fetchPersonalMessage(friendName){
+        try {
+            const response = await axios.get("http://localhost:3000/api/v1/chat/fetch-personal-chat" , { friendName } ,{
+                withCredentials:true
+            })
+            console.log("fetchPersonalMessage" , response.data)
+            return response.data.message.personalMessages.messages
+        } catch (error) {
+            console.log("Error while fetching" , error)
+        }
+    }
+
+    async savePersonalMessage(friendName , messageFromSender){
+        try { //Add some redis type shit , didn't learned it yet!! 
+            const response = await axios.get("http://localhost:3000/api/v1/chat/save-personal-chat" , {friendName , messageFromSender},{
+                withCredentials:true
+            })
+            return response.data;
+        } catch (error) {
+            console.log("Error at savePersonal Message" , error)            
+        }
+    }
 
 }
 

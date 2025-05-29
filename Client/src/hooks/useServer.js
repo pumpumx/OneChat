@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-import { recieveMessage, recievePrivateMessage } from "./clientMessageHandler.js";
+import { recieveMessage, recievePrivateMessage, sendMessage, sendPrivateMessage } from "./clientMessageHandler.js";
 import { authMethod } from "../auth_api/user.auth.js";
 let clientSocket = null;
 const clientConnectionInstance = async () => {
@@ -25,9 +25,10 @@ const clientConnectionInstance = async () => {
     clientSocket.on("disconnect" , ()=>{
       console.log("User disconnected with id: ", clientSocket.id);
     })
-
+    sendMessage();
     recieveMessage();
     recievePrivateMessage();
+    sendPrivateMessage();
   }
   catch (error) {
     console.log("Error while Client connection", error)
