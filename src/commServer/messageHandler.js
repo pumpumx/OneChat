@@ -27,6 +27,7 @@
                     }
 
                     io.to(p2p).emit("recieve_private", {updatedMessage})
+                    //Add message batching here later on in order to improve performance 
             })
 
                 socket.on('disconnect', () => {
@@ -35,12 +36,6 @@
         } catch (error) {
             console.log("Error at handle Messages", error)
         }
-    }
-
-    const joinRoomViaName = (socket, io, user) => {
-        socket.on("Join Room", () => {
-            socket.join('')
-        })
     }
 
 

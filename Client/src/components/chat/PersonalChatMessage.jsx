@@ -8,11 +8,12 @@ import { Plus } from 'lucide-react'
 import { Mic } from 'lucide-react';
 import { SendHorizontal } from 'lucide-react';
 import {rotatePlus,rotateCross} from './chatAnimations.js'
-
+import { friendChattingWithData } from '../../atoms/friendAtom.js'
+import { useAtom } from 'jotai'
 function ChatMessage() {
-
+  const [friendData , setFriendData] = useAtom(friendChattingWithData)
   const rotateRef = useRef(null)
-
+  
   const [message, setMessage] = useState("")
   const [docToggle , setDocToggle] = useState(false)
 

@@ -5,7 +5,8 @@ import { Chat } from "../models/chat.model.js";
 import jwt from 'jsonwebtoken'
 import { FriendChat } from "../models/friendChat.model.js";
 import { Friend } from "../models/friend.model.js";
-
+import validator from 'validator'
+import { User } from "../models/user.model.js";
 const saveRoomMessages = asyncHandler(async (req, res) => {
     //This thing can be expensive !! Change the logic as the database grows. probably save the message to redis and then save it to database after some time , maybe idk!.. 
     const { userMessage } = req.body;
@@ -29,7 +30,7 @@ const saveRoomMessages = asyncHandler(async (req, res) => {
         .json(
             new ApiResponse(200, "message synced with database", { status: "True", message: "message synced with database" })
         )
-}) 
+})
 
 const loadRoomMessages = asyncHandler(async (req, res) => {
     //Verify JWT ie user
@@ -52,10 +53,10 @@ const loadRoomMessages = asyncHandler(async (req, res) => {
 
 const createNewRoom = asyncHandler(async (req, res) => {
     //Used to create a temp Room 
-    const {roomName} = req.body; 
+    const { roomName } = req.body;
 
-    if(roomName.trim() === '') throw new ApiError(400 , [{status:400,message:"Enter a roomName"}])
-    const message = `Welcome to ${roomName}` 
+    if (roomName.trim() === '') throw new ApiError(400, [{ status: 400, message: "Enter a roomName" }])
+    const message = `Welcome to ${roomName}`
 
     const createRoom = await Chat.create({
         roomName: roomName,
@@ -65,85 +66,71 @@ const createNewRoom = asyncHandler(async (req, res) => {
     await createRoom.save();
 
     return res
-    .status(200)
-    .json(
-        new ApiResponse(200 , `Room created with room name ${roomName}`)
-    )
-
-})
-
-const fetchFriendChat = asyncHandler(async(req,res)=>{
-    const user = req.user
-    if(!user) throw new ApiError(400 , "User Unauthenticated")
-    
-    const friendUsername = req.body
-    if(!friendUsername && !validator.isAlphanumeric(friendUsername)) throw new ApiError(400, "No friends")
-    
-    const friendDetails = await User.findOne({username: friendUsername}).select("_id")
-
-    const friendChat = await FriendChat.aggregate([
-        {$match: {participants: {$all: [user._id , friendDetails._id ]}}},
-        {
-            $project:{
-                messaage:1
-            }
-        }
-    ])
-
-    console.log("friend chat" , friendChat)
-    if(!friendChat) throw new ApiError(400 , "No message history found")
-
-    return res
-    .status(200)
-    .json(
-        new ApiResponse(200,"Messages fetched",{friendChat})
-    )
-    
-})
-
-const savePersonalChatMessage = asyncHandler(async(req,_,next)=>{ //Must add delay like message batching in order to handle multiple api request 
-  
-        const user = req.user
-        
-        const {friendName , messageFromSender} = req.body //For further improvement remove single message with array of messages if you think to integrate redis!!!
-        if(!friendName || !validator.isAlphanumeric((friendName))) throw new ApiError(400,"Friend Name not provided")
-        
-        const friendId = await Friend.findOne({username: friendName})
-        if(!friendId) throw new ApiError(400 , "No such user is your friend , trying to make random friends ???")
-
-        req.friendId = friendId
-
-        const thereChat = await FriendChat.findOneAndUpdate(
-            {participants: {$all : [user._id , friendId]},},
-            {$push : {messages:{
-                sender:user._id,
-                content:messageFromSender,
-            }}}
+        .status(200)
+        .json(
+            new ApiResponse(200, `Room created with room name ${roomName}`)
         )
-        if(!thereChat) throw new ApiError(400 , "Error saving the chat!!")
-            next();
-   
+
 })
 
-const fetchPersonalChatMessage = asyncHandler(async(req,res)=>{
-    const user = req.user
-    const friendId = req.friendId
 
-    const personalMessages = await FriendChat.aggregate([
-        {$match : {participants: {$all : [user._id , friendId]}}},
+
+const savePersonalChatMessage = asyncHandler(async (req, res) => { //Must add delay like message batching in order to handle multiple api request 
+
+    const user = req.user
+
+    const { friendName, messageFromSender } = req.body //For further improvement remove single message with array of messages if you think to integrate redis!!!
+    if(!messageFromSender) throw new ApiError(400 , "No message found to save")
+        
+    if (!friendName || !validator.isAlphanumeric((friendName))) throw new ApiError(400, "Friend Name not provided")
+
+    const friendId = await User.findOne({ username: friendName }).select("_id")
+    if (!friendId) throw new ApiError(400, "No such user is your friend , trying to make random friends ???")
+
+    const thereChat = await FriendChat.findOneAndUpdate(
+        { participants: { $all: [user._id, friendId._id] }, },
         {
-            $project: {
-                content:1
+            $push: {    
+                messages: {
+                    sender: user._id,
+                    content: messageFromSender,
+                }
             }
-        }
-    ])
-    if(!personalMessages) throw new ApiError(400 , "unable to fetch Personal messages")
-    
-    return res
-    .status(200)
-    .json(
-        new ApiResponse(200 , "User Chat Fetched Successfully",{personalMessages})
+        },
+        {new:true}
     )
+
+    console.log("there chat" , thereChat)
+    if (!thereChat) throw new ApiError(400, "Error saving the chat!!")
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(200, "Message Saved Successfully")
+        )
+
+})
+
+const fetchPersonalChatMessage = asyncHandler(async (req, res) => {
+    const user = req.user
+    const { friendName } = req.body 
+
+    if (!friendName || !validator.isAlphanumeric((friendName))) throw new ApiError(400, "Friend Name not provided")
+    const friendId = await User.findOne({ username: friendName }).select("_id")
+    if (!friendId) throw new ApiError(400, "No such user is your friend , trying to make random friends ???")
+
+    const personalMessages = await FriendChat.findOne( { participants: { $all: [user._id, friendId._id] } }).populate({
+        path:"messages.sender",
+        select:"username -_id"
+    }).select("messages -_id")
+    console.log("personal" , personalMessages)
+    if (!personalMessages) throw new ApiError(400, "unable to fetch Personal messages")
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(200, "User Chat Fetched Successfully", { personalMessages})
+        )
 
 })
 

@@ -12,7 +12,7 @@ const friendChatSchema = new mongoose.Schema({
             ref:"User"
         },
         content:{
-            type:String,
+            type:String,    
         },
         senderTimestamp:{
             type:Date,

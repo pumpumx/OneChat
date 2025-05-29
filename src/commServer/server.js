@@ -1,4 +1,4 @@
-import { Server, Socket } from "socket.io";
+import { Server } from "socket.io";
 import { ApiError } from "../utils/apiError.js";
 import { handleMessages } from "./messageHandler.js";
 import jwt from 'jsonwebtoken'

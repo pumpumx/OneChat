@@ -31,7 +31,16 @@ class chatApi{
             return error.data
         }
     }
+//     async saveAndFetchPersonalMessage(data , username){
+//         try {
+//             const response = await 
+//         } catch (error) {
+            
+//         }
+//     }
+
 }
+
    
 
 

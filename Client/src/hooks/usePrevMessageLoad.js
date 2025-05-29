@@ -2,9 +2,9 @@ import { chat } from "../auth_api/chat.auth";
 import { useSetAtom } from "jotai";
 import { chatHistory } from "../atoms/chatAtom";
 import { useEffect } from "react";
-
+import { personalChatHistory } from "../atoms/chatAtom";
 export function usePrevMessageLoad(){
-    const setPrevChatHistory = useSetAtom(chatHistory)
+    const setPrevChatHistory = useSetAtom(chatHistory) //Responsible for fetching room's chat!!
 
     useEffect(()=>{
         const fetchData = async() => {
@@ -16,4 +16,15 @@ export function usePrevMessageLoad(){
     }, [setPrevChatHistory])
 
 }
+
+// export function usePersonalChatLoad(){ //Fetching logic for presonal chats!!
+ 
+//     const setPersonalChatHistory = useSetAtom(personalChatHistory)
+
+//     useEffect(()=>{
+//         (async ()=>{
+//             const response = await 
+//         })
+//     },[setPersonalChatHistory])
+// }
 
