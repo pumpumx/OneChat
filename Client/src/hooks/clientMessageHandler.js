@@ -1,5 +1,5 @@
 import { clientSocket } from "./useServer.js";
-import { chatHistory } from "../atoms/chatAtom.js";
+import { chatHistory, personalChatHistory } from "../atoms/chatAtom.js";
 import { store } from "../atoms/store.js";
 import { chat } from "../auth_api/chat.auth.js";
 
@@ -15,9 +15,11 @@ const sendMessage = async (data) => {
 }
 
 const sendPrivateMessage = async (data,usernameToWhomMessageWillBeSent) =>{
-    console.log("sendPrivate" , usernameToWhomMessageWillBeSent)
+    console.log("sendPrivate" , usernameToWhomMessageWillBeSent , data)
     if(clientSocket && clientSocket.connected){
-        await clientSocket.emit('send_private',{data,usernameToWhomMessageWillBeSent})
+         const sendingMess = clientSocket.emit('send_private',{data,usernameToWhomMessageWillBeSent})
+         if(!sendingMess) return;
+            await chat.savePersonalMessage(usernameToWhomMessageWillBeSent , data)
     }
     
 }
@@ -47,6 +49,10 @@ const recievePrivateMessage = ()=>{
     if(clientSocket || clientSocket.connected){
         clientSocket.on('recieve_private',(privateMessage)=>{
             console.log("PrivateMessage" , privateMessage)
+            //Add the logix of setting the personalChat atom!!! 
+            const prev = store.get(personalChatHistory)
+            const updated = [...prev,privateMessage]
+            store.set(personalChatHistory , updated)
         })
     }
 }

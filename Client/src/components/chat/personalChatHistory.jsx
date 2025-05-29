@@ -1,20 +1,34 @@
 import React, { useEffect,useState } from 'react';
 import { useAtom } from 'jotai';
 import { personalChatHistory } from '../../atoms/chatAtom.js';
+import { chat } from '../../auth_api/chat.auth.js';
+import { friendChattingWithData } from '../../atoms/friendAtom.js';
 function PersonalChatHistory() {
-  const [chatHistory] = useAtom(personalChatHistory)
-  const [filteredHistory, setFilteredHistory] = useState([]);
+  const [friendData] = useAtom(friendChattingWithData)
+  const [isSenderme , setIsSenderMe] = useState(true)
 
-  useEffect(() => {    
-    setFilteredHistory([...chatHistory]); // No nested arrays
-  }, [chatHistory]);
+  const [filteredHistory, setFilteredHistory] = useAtom(personalChatHistory);
+
+    const fetchData = async  ()=>{
+    console.log("User at persoHistory" , friendData)
+    const response = await chat.fetchPersonalMessage(friendData)
+    console.log("res " , response)
+
+    const value = response.map((val)=>val.content)
+    console.log(value)
+    setFilteredHistory([...value])
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [friendData] , );
 
   return (
     <>
       {filteredHistory.length > 0 ? (
         filteredHistory.map((val, index) => (
-          <div key={index} className='w-[100%] h-[2rem] text-9xl text-white'>
-            <p className='font-medium text-9xl '>{val}</p>
+          <div key={index} className='w-[90%] h-[2rem] text-2xl text-white'>
+            <p className='font-medium 3xl '>{val}</p>
           </div>
         ))
       ) : (

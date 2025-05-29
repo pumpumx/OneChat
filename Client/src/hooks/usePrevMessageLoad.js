@@ -17,17 +17,19 @@ export function usePrevMessageLoad(){
 
 }
 
-export function usePersonalChatLoad(){ //Fetching logic for presonal chats!!
+// export function usePersonalChatLoad(friendName){ //Fetching logic for presonal chats!!
  
-    const setPersonalChatHistory = useSetAtom(personalChatHistory)
+//     const setPersonalChatHistory = useSetAtom(personalChatHistory)
 
-    useEffect(()=>{
-        (async ()=>{
-            const response = await chat.fetchPersonalMessage()
-            const messages = response.map((message)=>message.content)
-            console.log("Personal messages" , messages)
-            setPersonalChatHistory([...messages])
-        })
-    },[setPersonalChatHistory])
-}
+//     useEffect(()=>{
+//         const fetchData = async ()=>{
+//             const response = await chat.fetchPersonalMessage(friendName)
+//             console.log("response" , response)
+//             // const messages = response.map((message)=>message.content)
+//             // console.log("Personal messages" , messages) 
+//             // setPersonalChatHistory([...messages])
+//         }
+//         fetchData()
+//     },[])
+// }
 

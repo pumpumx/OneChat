@@ -8,6 +8,6 @@ chatRouter.route('/save-room-messages').post(verifyJWT , saveRoomMessages) //Can
 chatRouter.route('/load-room-messages').get(verifyJWT , loadRoomMessages)
 chatRouter.route('/create-new-room').post(verifyJWT , createNewRoom)
 chatRouter.route('/save-personal-chat').post(verifyJWT , savePersonalChatMessage)
-chatRouter.route('/fetch-personal-chat').get(verifyJWT , fetchPersonalChatMessage)
+chatRouter.route('/fetch-personal-chat').post(verifyJWT , fetchPersonalChatMessage)
 chatRouter.route('/socket-auth').post(verifyJWT , socketAuth)
 export default chatRouter

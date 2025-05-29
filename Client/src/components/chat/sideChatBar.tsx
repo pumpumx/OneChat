@@ -94,7 +94,7 @@ const ToggledRequestTab = () => {
 
 function SideChatBar() {
 
-  const setFriendData = useSetAtom(friendChattingWithData)
+  const [friendData , setFriendData] = useAtom(friendChattingWithData)
   const [confirmedFriendsList, setConfirmedAtomList] = useAtom(confirmedFriends)
   const [toggleRequestTab, setToggleRequestTab] = useState(false)
 
@@ -114,14 +114,15 @@ function SideChatBar() {
     }
   }
 
-  const fetchPersnalFriendHandler = (friend)=> {
-    setFriendData(friend)
-    console.log("friend data" , friend)
+  const fetchPersnalFriendHandler = async (friend)=> {
+    console.log("friend " , friend)
+     setFriendData(friend);
   }
 
   useEffect(() => {
     (async () => {
       try {
+        console.log("friendDataAtom" , friendData)
         const response = await friendReq.fetchAcceptedFriends()
         const acceptedFriends = response.map((user) => user.username)
         setConfirmedAtomList(acceptedFriends)
@@ -129,7 +130,7 @@ function SideChatBar() {
         console.log("Error", error)
       }
     })();
-  }, [confirmedFriends])
+  }, [confirmedFriends , friendData])
 
   
   return (

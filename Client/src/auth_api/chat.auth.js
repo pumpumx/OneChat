@@ -33,10 +33,9 @@ class chatApi{
     }
     async fetchPersonalMessage(friendName){
         try {
-            const response = await axios.get("http://localhost:3000/api/v1/chat/fetch-personal-chat" , { friendName } ,{
+            const response = await axios.post("http://localhost:3000/api/v1/chat/fetch-personal-chat" , {friendName}, {
                 withCredentials:true
             })
-            console.log("fetchPersonalMessage" , response.data)
             return response.data.message.personalMessages.messages
         } catch (error) {
             console.log("Error while fetching" , error)
@@ -45,7 +44,7 @@ class chatApi{
 
     async savePersonalMessage(friendName , messageFromSender){
         try { //Add some redis type shit , didn't learned it yet!! 
-            const response = await axios.get("http://localhost:3000/api/v1/chat/save-personal-chat" , {friendName , messageFromSender},{
+            const response = await axios.post("http://localhost:3000/api/v1/chat/save-personal-chat" , {friendName , messageFromSender},{
                 withCredentials:true
             })
             return response.data;

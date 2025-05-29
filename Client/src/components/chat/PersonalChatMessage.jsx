@@ -4,15 +4,13 @@ import { clientSocket } from '../../hooks/useServer.js'
 import {  sendPrivateMessage } from '../../hooks/clientMessageHandler.js'
 import PersonalChatHistory from './personalChatHistory.jsx'
 import { Plus } from 'lucide-react'
-
 import { Mic } from 'lucide-react';
 import { SendHorizontal } from 'lucide-react';
 import {rotatePlus,rotateCross} from './chatAnimations.js'
 import { friendChattingWithData } from '../../atoms/friendAtom.js'
 import { useAtom } from 'jotai'
-import { usePersonalChatLoad } from '../../hooks/usePrevMessageLoad.js'
-function ChatMessage() {
-  const [friendData] = useAtom(friendChattingWithData)
+function PersonalChatMessage() {
+  const [friendData , setFriendData] = useAtom(friendChattingWithData)  
   const rotateRef = useRef(null)
   
   const [message, setMessage] = useState("")
@@ -27,22 +25,20 @@ function ChatMessage() {
       rotateCross(rotateRef)
     }
   }
-  usePersonalChatLoad() // Initially loads the message as the component is mounted..
   useEffect(() => {
-     
     clientConnectionInstance()
     return () => {
       if (clientSocket) {
         clientSocket.disconnect();
       }
     }
-  }, [])
+  }, [setFriendData])
 
   return (
     <>
       <div className='w-full h-full  flex flex-col justify-between bg-[url(/chatBg2.gif)] bg-cover'>
-        <div className='w-full h-[80%] overflow-auto scroll-smooth text-white flex flex-col justify-center items-center text-3xl px-10 lg:text-xl pixelify-sans-okish'>
-          <PersonalChatHistory />
+        <div className='w-full h-[80%] overflow-auto scroll-smooth text-white flex flex-col  pt-5 items-center text-3xl px-10 lg:text-xl pixelify-sans-okish'>
+          <PersonalChatHistory/>
         </div>
         <div className='w-full lg:h-[7%] p-2  bg-neutral-700 flex lg:flex-row items-center justify-center '>
           <div className='plus lg:w-[5%] lg:h-full  flex items-center justify-center'>
@@ -66,4 +62,4 @@ function ChatMessage() {
   )
 }
 
-export default ChatMessage
+export default PersonalChatMessage
