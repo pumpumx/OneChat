@@ -40,8 +40,7 @@ const recieveMessage = () => {
         console.log("Failed to recieve message", error)
     }
 }
-const recievePrivateMessage = async () => {
-    try {
+const recievePrivateMessage = () => {
         clientSocket.on('recieve_private', (privateMessage) => {
             console.log("PrivateMessage", privateMessage)
             const prev = store.get(personalChatHistory) 
@@ -49,10 +48,7 @@ const recievePrivateMessage = async () => {
             store.set(personalChatHistory , update)
             
         })
-    } catch (error) {
-        console.log("Error in recieve private message", error)
     }
-}
 
 export {
     sendMessage,
