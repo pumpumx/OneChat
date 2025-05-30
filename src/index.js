@@ -11,7 +11,7 @@ dotenv.config({
 await connectDB()
 .then(()=>{
     try {
-        app.listen(process.env.PORT || 8000, ()=>{
+        app.listen(process.env.PORT || 8200, '0.0.0.0', ()=>{
             console.log(`Databse Server running at port ${process.env.PORT}`)
         })
     } catch (error) {

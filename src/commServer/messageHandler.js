@@ -10,13 +10,11 @@
                 io.emit("recieve_data", updatedMessage)
             })
 
-            socket.on('send_private', ({ data, usernameToWhomMessageWillBeSent }) => { //This function takes handles private messaging !! 
-
-                    const updatedMessage = `${user.username} : ${data}` 
+            socket.on('send_private', ({ data, usernameToWhomMessageWillBeSent }) => { //This function takes handles private messaging !!  
 
                     const recipientSocket = userSocketMap.get(usernameToWhomMessageWillBeSent)
-
-                    io.to(recipientSocket).emit("recieve_private", {data:updatedMessage})
+                    console.log("recipientSocker" , recipientSocket)
+                    io.to(recipientSocket).emit("recieve_private", {data:data})
                     //Add message batching here later on in order to improve performance 
             })
 

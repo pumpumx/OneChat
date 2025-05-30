@@ -41,10 +41,9 @@ class authentication{
        const isAuth =  await axios.post("http://localhost:3000/api/v1/users/user-auth" , null , {
         withCredentials: true
        })
-       console.log("user at auth" , isAuth.data )
-
+       
        if(isAuth.data.status == 200 ){
-        return true
+        return {gate:true , user:isAuth.data.message.user}
        } 
        return false
     }

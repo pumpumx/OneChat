@@ -19,7 +19,6 @@ const clientConnectionInstance = async () => {
     }
 
     clientSocket.on("connect", () => {
-      console.log("User Connected with id: ", clientSocket.id);
       sendMessage();
       recieveMessage();
       recievePrivateMessage();
