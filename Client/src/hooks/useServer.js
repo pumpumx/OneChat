@@ -19,13 +19,13 @@ const clientConnectionInstance = async () => {
     }
 
     clientSocket.on("connect", () => {
+      console.log("User connnected" )
       sendMessage();
       recieveMessage();
       recievePrivateMessage();
       sendPrivateMessage();
     })
-
-
+        
     clientSocket.on("disconnect", () => {
       console.log("User disconnected with id: ", clientSocket.id);
     })
