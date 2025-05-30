@@ -14,10 +14,9 @@ import { userAtom } from '../../atoms/atom.js';
 function PersonalChatMessage() {
   const user = useAtomValue(userAtom)
   const userUsername = user.username
-  const [friendData, setFriendData] = useAtom(friendChattingWithData)
+  const [friendData] = useAtom(friendChattingWithData)
   const [message, setMessage] = useState("")
   const childRef = useRef();
-
 
   const rotateRef = useRef(null) //Seperate this rotate ref compoennet , looks messy!!
 
