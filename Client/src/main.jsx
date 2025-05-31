@@ -6,11 +6,11 @@ import RouteAuthProvider from './auth_api/RouteAuthProvider.jsx'
 import { LazyLogin , lazyMainChat} from './components/LazyComp.jsx'
 import WithSuspense from './components/WithSuspense.jsx'
 import PrivateChat from './components/privateChat/PrivateChat.js'
-import MainScreen from './LandingPage/components/MainScreen.jsx'
+import LandingPage from './LandingPage/LandingPage.jsx'
 const routes = createBrowserRouter(
   createRoutesFromElements(
     <>
-    <Route path='/' element={<MainScreen/>}/>
+    <Route path='/' element={<LandingPage/>}/>
       <Route path='/login' element={WithSuspense(LazyLogin)} >
       </Route>
       <Route path='/register' element={<App/>} />
