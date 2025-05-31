@@ -45,9 +45,9 @@ function MainScreen() {
               </div>
             </div>
             <div className='absolute w-full h-[20%] bottom-0 flex flex-row justify-between items-center bg-neutral-800 border-t-white/80 border-1 border-transparent '>
-              <span className='text-4xl font-bold h-full text-white w-[30%] flex items-center text-center justify-center border-r-white/80 border-1 border-transparent '><p>Instagram</p></span>
-              <span className='text-4xl font-bold text-white h-full flex items-center text-center justify-center w-[40%] border-r-white/80 border-1 border-transparent'><p>LinkedIn</p></span>
-              <span className='text-4xl font-bold text-white  w-[30%]  flex items-center text-center justify-center'><p>Mail</p><span className='h-full w-[2px] bg-white'></span></span>
+              <span className='text-2xl font-bold h-full text-white w-[30%] flex items-center text-center justify-center border-r-white/80 border-1 border-transparent '><p>Instagram</p></span>
+              <span className='text-2xl font-bold text-white h-full flex items-center text-center justify-center w-[40%] border-r-white/80 border-1 border-transparent'><p>LinkedIn</p></span>
+              <span className='text-2xl font-bold text-white  w-[30%]  flex items-center text-center justify-center'><p>Mail</p><span className='h-full w-[2px] bg-white'></span></span>
 
             </div>
           </div>
