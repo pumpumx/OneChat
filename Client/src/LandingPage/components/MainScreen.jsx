@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { MouseParallax } from 'react-just-parallax'
-
-
+import { useNavigate } from 'react-router-dom'
 function MainScreen() {
   const firstContainerRef = useRef(null)
   const [aboveBarOpen, setAboveBarOpen] = useState(false)
@@ -10,6 +9,8 @@ function MainScreen() {
   const abovePanelHandler = () => {
     setAboveBarOpen(!aboveBarOpen)
   }
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const element = abovePanelRef.current
@@ -45,8 +46,8 @@ function MainScreen() {
               </div>
             </div>
             <div className='absolute w-full h-[20%] bottom-0 flex flex-row justify-between items-center bg-neutral-800 border-t-white/80 border-1 border-transparent '>
-              <span className='text-2xl font-bold h-full text-white w-[30%] flex items-center text-center justify-center border-r-white/80 border-1 border-transparent '><p>Instagram</p></span>
-              <span className='text-2xl font-bold text-white h-full flex items-center text-center justify-center w-[40%] border-r-white/80 border-1 border-transparent'><p>LinkedIn</p></span>
+              <span  className='text-2xl font-bold h-full text-white w-[30%] flex items-center text-center justify-center border-r-white/80 border-1 border-transparent '><p><a href='https://www.instagram.com/naazmanhas?igsh=anQ3eTBxZzQ3bjh1'>Instagram</a></p></span>
+              <span className='text-2xl font-bold text-white h-full flex items-center text-center justify-center w-[40%] border-r-white/80 border-1 border-transparent'><p><a href='https://www.linkedin.com/in/naazmanhas/'>LinkedIn</a></p></span>
               <span className='text-2xl font-bold text-white  w-[30%]  flex items-center text-center justify-center'><p>Mail</p><span className='h-full w-[2px] bg-white'></span></span>
 
             </div>
@@ -56,7 +57,7 @@ function MainScreen() {
         <div className="navbar w-full h-[5rem] flex relative flex-row justify-between items-center  ">
           <span className='z-20'><p className='font-bold text-4xl text-red-500/90 '>Vanish</p></span>
           <span className='absolute translate-x-213 z-20' onClick={() => abovePanelHandler()}><p className='text-3xl cursor-pointer'>{aboveBarOpen ? "Close" : "Menu"}</p></span>
-          <span className='z-20'><p className='text-2xl '>Login/Signup</p></span>
+          <span className='z-20 flex cursor-pointer'><p className='text-2xl ' onClick={()=>navigate('/login')}>Login/</p><span><p className='text-2xl' onClick={()=>navigate('/register')}>Signup</p></span></span>
         </div>
         <div className="navbar w-full h-[5rem] flex flex-row justify-between items-center" >
           <span><p className='text-2xl'>@naazmanhas</p></span>
@@ -68,7 +69,7 @@ function MainScreen() {
               </span>
             </MouseParallax>
           </span>
-          <span><p className='text-2xl'>@adityaaishwarya</p></span>
+          <span><p className='text-2xl'>Inspired by <br />@ranlus.studio</p></span>
         </div>
         <BottomTextFunction />
       </div>

@@ -2,10 +2,12 @@ import React from 'react'
 import MainScreen from './components/MainScreen'
 import CenterScreen from './components/CenterScreen'
 import VideoSection from './components/VideoSection'
+import BottomSection from './components/BottomSection'
+import Footer from './components/Footer'
 function LandingPage() {
   return (
     <>
-      <div className='w-full ' >
+      <div className='w-full bg-neutral-950 lg:bg-transparent' >
       <video muted autoPlay={true} loop playsInline className='fixed top-0 left-0 -z-1'>
             <source src='/starBg.mp4' type='video/mp4' />            
           </video>
@@ -18,11 +20,14 @@ function LandingPage() {
             <CenterScreen />
           </div>
         </div>
-        <div className='w-full  h-[200vh]  z-0 '>
+        <div className='w-full  h-[250vh]  z-0 '>
             <VideoSection />
           </div>
-          <div className='w-full h-[100vh]'>
-
+          <div className='w-full h-[200vh] z-0'>
+              <BottomSection />
+          </div>
+          <div>
+              <Footer/>
           </div>
       </div>
 

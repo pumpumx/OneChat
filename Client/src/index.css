@@ -33,6 +33,45 @@
         0 0 80px #ff3300;
     }
   }
+
+  .glow-text2 {
+    font-size: 5rem;
+    color: #fff;
+    text-align: center;
+    animation: glow1 1s infinite alternate;
+  }
+
+  @keyframes glow1{
+    0% {
+      text-shadow: 
+        0 0 10px #f00, 
+        0 0 20px #0f0, 
+        0 0 30px #00f, 
+        0 0 40px #ff0, 
+        0 0 50px #f0f, 
+        0 0 60px #0ff, 
+        0 0 70px #fff;
+    }
+    100% {
+      text-shadow: 
+        0 0 20px #ff0, 
+        0 0 30px #f0f, 
+        0 0 40px #0ff, 
+        0 0 50px #fff, 
+        0 0 60px #f00, 
+        0 0 70px #0f0, 
+        0 0 80px #00f;
+    }
+  }
+
+  .shadow-3d {
+    color: #333;
+    text-shadow:
+      1px 1px 0 #ccc,
+      2px 2px 0 #bbb,
+      3px 3px 0 #aaa,
+      4px 4px 0 #999;
+  }
   
   .pixelify-sans-okish {
     font-family: "Pixelify Sans";
