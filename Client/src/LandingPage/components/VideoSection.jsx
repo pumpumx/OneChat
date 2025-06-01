@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
-import Lenis from 'lenis'
 import useLenis from '../../hooks/useLenis.js'
 function VideoSection() {
     const textRef = useRef()
@@ -37,7 +36,7 @@ function VideoSection() {
       if (tl.scrollTrigger) tl.scrollTrigger.kill()
       tl.kill()
     }
-  }, [])
+  }, [])    
 
   return (
     <div className='w-full h-[100vh] sticky top-0 ' ref={containerRef}>
@@ -46,8 +45,8 @@ function VideoSection() {
         <span className='z-10' ><p className='text-7xl  glow-text mr-5 z-50' ref={textRef}>Chat</p></span>
       </div>
       <div className='w-[40%] h-[90%] flex items-center justify-center z-0'>
-        <video muted autoPlay={true} loop className='w-[100%] h-full' ref={videoRef}>
-          <source src='/mahoraga.mp4' />
+        <video muted autoPlay={true} loop preload='auto' playsInline className='w-[100%] h-full' ref={videoRef}>
+          <source src='/suku.mp4' />
         </video>
       </div>
       <div className='w-[30%] h-[50%] flex justify-start items-center z-10 ' >
