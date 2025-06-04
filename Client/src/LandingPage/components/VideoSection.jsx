@@ -25,12 +25,11 @@ function VideoSection() {
     })
 
     // Animate the text towards center
-    tl.to(textRef.current, { x: '190%', opacity: 1, duration: 3 }, 0)
-    tl.to(text2Ref.current, { x: '-140%', opacity: 1, duration: 3 }, 0)
+    tl.to(textRef.current, { x: '110%', opacity: 1,scale:2 ,  duration: 3 }, 0)
+    tl.to(text2Ref.current, { x: '-100%', opacity: 1,scale:2, duration: 3 }, 0)
 
     // Scale up the video to fill the screen
-    tl.to(videoRef.current, { scale: 2, duration: 2, ease:'power2.in' }, 0)
-
+    tl.to(videoRef.current, { scale: 2.3, duration: 2, ease:'power2.in' }, 0)
     // Clean up
     return () => {
       if (tl.scrollTrigger) tl.scrollTrigger.kill()
@@ -39,7 +38,7 @@ function VideoSection() {
   }, [])    
 
   return (
-    <div className='w-full h-[100vh] sticky top-0 ' ref={containerRef}>
+    <div className='w-full h-[100vh] sticky top-0 overflow-x-hidden overflow-y-hidden' ref={containerRef}>
     <div className='w-full h-full flex  items-center justify-center z-10 '>
       <div className='w-[30%] h-[50%] russo-one-regular flex justify-end items-center'>
         <span className='z-10' ><p className='text-7xl  glow-text mr-5 z-50' ref={textRef}>Chat</p></span>
