@@ -6,9 +6,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"node src/index.js",
+    "start": "node src/index.js",
     "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js",
-    "build":"pnpm install  && pnpm install --prefix Client && pnpm run build --prefix Client "
+    "prepare-client": "pnpm install --filter ./Client",
+    "build-client": "pnpm --filter ./Client run build",
+    "build": "pnpm install && pnpm run prepare-client && pnpm run build-client"
   },
   "keywords": [],
   "author": "",
