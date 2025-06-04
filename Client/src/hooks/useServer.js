@@ -8,7 +8,7 @@ const clientConnectionInstance = async () => {
     const socketToken = await authMethod.socketAuth()
 
     if (!clientSocket || !clientSocket.connected) {
-      const socket = io("http://localhost:8000/", {
+      const socket = io("/", {
         auth: { token: socketToken },
         reconnectionAttempts: 5,
         timeout: 5000,

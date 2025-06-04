@@ -6,14 +6,14 @@ class friend{
     }
 
     async sendFriendRequest(friendUsername){
-        const response = await axios.post(`${import.meta.env.BACKEND_URL}/api/v1/friend/send-request`,{friendUsername:friendUsername},{
+        const response = await axios.post(`/api/v1/friend/send-request`,{friendUsername:friendUsername},{
             withCredentials:true
         })
         return response.data;
     }
 
     async checkPendingFriendRequest(){
-        const response = await axios.get(`${import.meta.env.BACKEND_URL}/api/v1/friend/fetch-pending-request`,{
+        const response = await axios.get(`/api/v1/friend/fetch-pending-request`,{
             withCredentials:true
         })
         const jsonRes = response.data.message.allPendingRequest
@@ -21,7 +21,7 @@ class friend{
     }
 
     async fetchAcceptedFriends(){
-        const response = await axios.get(`${import.meta.env.BACKEND_URL}/api/v1/friend/fetch-friend-list` ,{
+        const response = await axios.get(`/api/v1/friend/fetch-friend-list` ,{
             withCredentials: true   
         })
 
@@ -30,7 +30,7 @@ class friend{
     }
 
     async friendReqAction(responseFromUser , usernameOfUserWhoSentFriendRequest){
-        const response = await axios.post(`${import.meta.env.BACKEND_URL}/api/v1/friend/friend-request-action` , {responseFromUser , usernameOfUserWhoSentFriendRequest} , {
+        const response = await axios.post(`/api/v1/friend/friend-request-action` , {responseFromUser , usernameOfUserWhoSentFriendRequest} , {
             withCredentials:true
         })
         const jsonRes  =  response.data
@@ -38,7 +38,7 @@ class friend{
     }
     
     async removeFriend(friendUsername){
-        const response = await axios.delete(`${import.meta.env.BACKEND_URL}/api/v1/friend/remove-friend` , {
+        const response = await axios.delete(`/api/v1/friend/remove-friend` , {
             data:{friendUsername:friendUsername},
             withCredentials:true,
 

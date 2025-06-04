@@ -7,7 +7,7 @@ class chatApi{
 
     async loadRoomMessage(){
         try {
-            const response = await axios.get(`${import.meta.env.BACKEND_URL}api/v1/chat/load-room-messages`,{
+            const response = await axios.get(`api/v1/chat/load-room-messages`,{
                 withCredentials:true
             })
             console.log("loadMessageResponse" , response)
@@ -21,7 +21,7 @@ class chatApi{
 
     async  saveRoomMessage(userMessage){
         try {
-            const response = await axios.post(`${import.meta.env.BACKEND_URL}/api/v1/chat/save-room-messages` , userMessage , {
+            const response = await axios.post(`/api/v1/chat/save-room-messages` , userMessage , {
                 withCredentials: true
             })
             console.log("saveRoomResponse" , response)
@@ -33,7 +33,7 @@ class chatApi{
     }
     async fetchPersonalMessage(friendName){
         try {
-            const response = await axios.post(`${import.meta.env.BACKEND_URL}api/v1/chat/fetch-personal-chat` , {friendName}, {
+            const response = await axios.post(`api/v1/chat/fetch-personal-chat` , {friendName}, {
                 withCredentials:true
             })
             return response.data.message.personalMessages.messages
@@ -44,7 +44,7 @@ class chatApi{
 
     async savePersonalMessage(friendName , messageFromSender){
         try { //Add some redis type shit , didn't learned it yet!! 
-            const response = await axios.post(`${import.meta.env.BACKEND_URL}api/v1/chat/save-personal-chat` , {friendName , messageFromSender},{
+            const response = await axios.post(`/v1/chat/save-personal-chat` , {friendName , messageFromSender},{
                 withCredentials:true
             })
             return response.data;
