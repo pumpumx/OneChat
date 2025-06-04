@@ -10,7 +10,7 @@ app.use(express.urlencoded({
     limit : "16kb"
 }))
 app.use(cors({
-    origin:"https://localhost:3000",
+    origin:"https://vanish-xj7x.onrender.com",
     optionsSuccessStatus : 200,
     credentials: true
 }))
