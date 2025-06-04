@@ -1,16 +1,16 @@
 import cookieParser from 'cookie-parser'
 import express from 'express'
 import cors from 'cors'
+import path from 'path'
 const app = express()
 
-app.use(express.static('public'))
 
 app.use(express.urlencoded({
     extended:true,
     limit : "16kb"
 }))
 app.use(cors({
-    origin:"http://localhost:5173",
+    origin:"https://localhost:3000",
     optionsSuccessStatus : 200,
     credentials: true
 }))
@@ -30,3 +30,18 @@ app.use("/api/v1/users" , userRoute )
 app.use("/api/v1/chat" , chatRouter)
 app.use("/api/v1/friend",friendRouter)
 export default app
+
+
+
+const __dirname1 = path.resolve()
+
+if(process.env.NODE_ENV == 'prod'){
+    app.use(express.static(path.join(__dirname1 , "/Client/dist")));
+    app.get("*",(req ,res)=>{
+        res.sendFile(path.resolve(__dirname1 , "Client" ,"dist" ,"index.html"));
+    })
+}else{
+    app.get("/",(req,res)=>{
+        res.send("Api running successfully")
+    })  
+}

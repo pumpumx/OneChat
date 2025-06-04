@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle } from 'react';
 import { useAtom } from 'jotai';
 import { personalChatHistory } from '../../atoms/chatAtom.js';
 import { chat } from '../../auth_api/chat.auth.js';
