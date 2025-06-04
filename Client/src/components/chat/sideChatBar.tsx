@@ -136,7 +136,7 @@ function SideChatBar() {
   return (
     <div className='lg:w-[30%] h-full bg-red-400'> {/* Private chat with friends feature */}
       <header className='w-full lg:h-[10%] bg-neutral-950 flex lg:flex-row items-center justify-between '>
-        <span className='lg:w-[50%] lg:h-full flex flex-row items-center text-3xl pl-3 '><p className='text-white tiny5-regular font-bold '>OneChat</p></span>
+        <span className='lg:w-[50%] lg:h-full flex flex-row items-center text-3xl pl-3 '><p className='text-white russo-one-regular text-4xl font-bold '>OneChat</p></span>
         <span className='lg:w-[20%] flex items-center relative justify-center  hover:cursor-pointer transition-all ease-out '>
           <UserRoundPlus color='white' onClick={() => requestToggleHandler()} />
           {toggleRequestTab && (
@@ -144,17 +144,17 @@ function SideChatBar() {
           )}
         </span>
       </header>
-      <div className='lg:w-full lg:h-[90%] bg-green-700'>
-        <div className='lg:w-full lg:h-[5%] bg-neutral-800 flex items-center justify-between'>  {/* Search query element*/}
+      <div className='lg:w-full lg:h-[90%]'>
+        <div className='lg:w-full lg:h-[5%]  bg-neutral-800 flex items-center justify-between'>  {/* Search query element*/}
           <div className='searchFriendInput lg:w-[80%] lg:h-full'>
-            <input type="text" className='w-full h-full bg-neutral-700 indent-3 outline-none caret-white font-semibold text-white' />
+            <input type="text" className='w-full h-full  bg-neutral-700 indent-3 outline-none caret-white font-semibold text-white' />
           </div>
           <div className='searchFriendsLogo lg:w-[20%] lg:h-[85%] flex items-center justify-center'>
             <Search color='white' />
           </div>
         </div>
 
-        <div className='lg:w-full lg:h-[95%] bg-neutral-950'>
+        <div className='lg:w-full lg:h-[95%] russo-one-regular bg-neutral-950'>
           <div className='w-full h-full '>
             {confirmedFriendsList && confirmedFriendsList.map((friend, index) => (
                 

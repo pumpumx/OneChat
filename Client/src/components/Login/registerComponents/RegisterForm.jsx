@@ -53,7 +53,7 @@ function RegisterForm() {
 
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col space-y-6 lg:space-y-3 text-white russo-one-regular"
+                className="flex flex-col space-y-6 lg:space-y-3  text-white russo-one-regular"
             >
                 {/* Name Fields || COULD HAD made these commponents */}
                 <div className="flex flex-col md:flex-row md:space-x-6 space-y-0 md:space-y-0"> 
@@ -62,14 +62,14 @@ function RegisterForm() {
                         name="firstName"
                         error={errors.firstName}
                         register={register}
-                        className="w-full"
+                        className="w-full text-black"
                     />
                     <InputField
                         label="Last Name"
                         name="lastName"
                         error={errors.lastName}
                         register={register}
-                        className="w-full"
+                        className="w-full text-black"
                     />
                 </div>
 
@@ -79,6 +79,7 @@ function RegisterForm() {
                     name="username"
                     error={errors.username}
                     register={register}
+                    className='text-black'
                 />
                 <InputField
                     label="Email"
@@ -86,6 +87,7 @@ function RegisterForm() {
                     name="email"
                     error={errors.email}
                     register={register}
+                    className='text-black'
                 />
                 <InputField
                     label="Password"
@@ -93,6 +95,7 @@ function RegisterForm() {
                     name="password"
                     error={errors.password}
                     register={register}
+                    className='text-black'
                 />
 
                 {/* Submit Button */}

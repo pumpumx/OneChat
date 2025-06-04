@@ -51,7 +51,7 @@ function PersonalChatMessage() {
 
   return (
     <>
-      <div className='w-full h-full  flex flex-col justify-between bg-[url(/chatBg2.gif)] bg-cover'>
+      <div className='w-full h-full  flex russo-one-regular flex-col justify-between bg-[url(/chatBg2.gif)] bg-cover'>
 
         <div className='w-full h-[80%] overflow-auto scroll-smooth text-white flex lg:flex-col  pt-5 items-center text-3xl px-10 lg:text-xl pixelify-sans-okish'>
           <PersonalChatHistory ref={childRef} message={message} />
