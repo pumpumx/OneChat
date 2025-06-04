@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start":"node src/index.js",
     "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js",
-    "build":"pnpm install  && pnpm install --prefx Client && pnpm run build --prefix Client "
+    "build":"pnpm install  && pnpm install --prefix Client && pnpm run build --prefix Client "
   },
   "keywords": [],
   "author": "",
