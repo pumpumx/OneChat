@@ -6,7 +6,7 @@ class friend{
     }
 
     async sendFriendRequest(friendUsername){
-        const response = await axios.post("http://localhost:3000/api/v1/friend/send-request",{friendUsername:friendUsername},{
+        const response = await axios.post("/api/v1/friend/send-request",{friendUsername:friendUsername},{
             withCredentials:true
         })
         return response.data;
@@ -14,7 +14,7 @@ class friend{
 
     async checkPendingFriendRequest(){
         console.log("Inside function")
-        const response = await axios.get("http://localhost:3000/api/v1/friend/fetch-pending-request",{
+        const response = await axios.get("/api/v1/friend/fetch-pending-request",{
             withCredentials:true
         })
         const jsonRes = response.data.message.allPendingRequest
@@ -22,7 +22,7 @@ class friend{
     }
 
     async fetchAcceptedFriends(){
-        const response = await axios.get("http://localhost:3000/api/v1/friend/fetch-friend-list" ,{
+        const response = await axios.get("/api/v1/friend/fetch-friend-list" ,{
             withCredentials: true   
         })
 
@@ -31,7 +31,7 @@ class friend{
     }
 
     async friendReqAction(responseFromUser , usernameOfUserWhoSentFriendRequest){
-        const response = await axios.post("http://localhost:3000/api/v1/friend/friend-request-action" , {responseFromUser , usernameOfUserWhoSentFriendRequest} , {
+        const response = await axios.post("/api/v1/friend/friend-request-action" , {responseFromUser , usernameOfUserWhoSentFriendRequest} , {
             withCredentials:true
         })
         console.log("Lets goooo")
@@ -41,7 +41,7 @@ class friend{
     }
     
     async removeFriend(friendUsername){
-        const response = await axios.delete("http://localhost:3000/api/v1/friend/remove-friend" , {
+        const response = await axios.delete("/api/v1/friend/remove-friend" , {
             data:{friendUsername:friendUsername},
             withCredentials:true,
 
