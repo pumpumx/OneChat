@@ -9,9 +9,9 @@ import { useSetAtom } from 'jotai'
 import { userAtom } from '../../../atoms/atom.js'
 import { useNavigate } from 'react-router-dom'
 function RegisterForm() {
-    
-    const navigate  = useNavigate()
-   const setRegisterAtom  = useSetAtom(userAtom)
+
+    const navigate = useNavigate()
+    const setRegisterAtom = useSetAtom(userAtom)
 
     const registerSchema = yup.object().shape({
         firstName: yup.string().required('First Name is required'),
@@ -38,9 +38,9 @@ function RegisterForm() {
                 setRegisterAtom(response.data)
                 setTimeout(() => {
                     navigate('/app')
-                } , 1000)
+                }, 1000)
             }
-            else{
+            else {
                 setRegisterAtom({})
             }
         } catch (error) {
@@ -48,32 +48,69 @@ function RegisterForm() {
         }
     }
     return (
-        <div className='w-[90%] h-full bg-white p-10  rounded-xl'>
-            <h1 className='text-4xl h-[10%] a'>Sign up Now</h1>
+        <div className="md:w-[90%] lg:w-[60%]  h-auto  max-w-3xl mx-auto bg-white/40 lg:p-15 p-10 rounded-2xl shadow-md">
+            <h1 className="text-4xl font-bold text-center mb-8 text-white russo-one-regular">Sign Up Now</h1>
 
-            <form onSubmit={handleSubmit(onSubmit)}
-                className='w-full h-full flex flex-col gap-2
-                p-6
-                justify-around  items-center '
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex flex-col space-y-6 lg:space-y-3 text-white russo-one-regular"
             >
-                <div className='w-full h-[20%] flex gap-3 justify-around '>
-                    < InputField label="First Name" name="firstName" error={errors.firstName} register={register} className='w-[30%]' />
-                    < InputField label="Last Name" name="lastName" error={errors.lastName} register={register} className='w-[30%]' />
-                </div>
-                <div className='w-full h-[60%] flex flex-col  justify-around' >
-                    < InputField label="Username" name="username" error={errors.username} register={register} />
-                    < InputField label="Email" type='email' name="email" error={errors.email} register={register} />
-                    < InputField label="Password" type='password' name="password" error={errors.password} register={register} />
+                {/* Name Fields || COULD HAD made these commponents */}
+                <div className="flex flex-col md:flex-row md:space-x-6 space-y-0 md:space-y-0"> 
+                    <InputField
+                        label="First Name"
+                        name="firstName"
+                        error={errors.firstName}
+                        register={register}
+                        className="w-full"
+                    />
+                    <InputField
+                        label="Last Name"
+                        name="lastName"
+                        error={errors.lastName}
+                        register={register}
+                        className="w-full"
+                    />
                 </div>
 
-                <button type="submit"
-                    className='w-[25%] h-[10%] hover:cursor-grab bg-[#beadad] hover:bg-green-400 rounded-xl 
-                   motion-preset-oscillate-sm motion-paused hover:motion-running'
-                >
-                    {isSubmitting ? <Spinner /> : <p className="">Sign up</p>}
-                </button>
+                {/* Other Fields */}
+                <InputField
+                    label="Username"
+                    name="username"
+                    error={errors.username}
+                    register={register}
+                />
+                <InputField
+                    label="Email"
+                    type="email"
+                    name="email"
+                    error={errors.email}
+                    register={register}
+                />
+                <InputField
+                    label="Password"
+                    type="password"
+                    name="password"
+                    error={errors.password}
+                    register={register}
+                />
+
+                {/* Submit Button */}
+                <div>
+                    <button
+                        type="submit"
+                        className="w-full md:w-1/3 mx-auto h-12 bg-[#beadad] hover:bg-green-500 transition-all duration-200 text-white font-semibold rounded-xl flex items-center justify-center"
+                    >
+                        {isSubmitting ? <Spinner /> : "Sign Up"}
+                    </button>
+
+                </div>
+
+
+
             </form>
         </div>
+
     )
 }
 
