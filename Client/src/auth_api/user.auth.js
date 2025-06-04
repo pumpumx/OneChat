@@ -5,7 +5,7 @@ class authentication{
     }
     async registerUser(formData){
         try {
-            const response = await axios.post("http://localhost:3000/api/v1/users/register" , formData , {
+            const response = await axios.post("/api/v1/users/register" , formData , {
                 withCredentials: true
             })
             console.log("Register response: " , response )
@@ -20,7 +20,7 @@ class authentication{
 
     async loginUser(formData){
         try {
-            const response = await axios.post("http://localhost:3000/api/v1/users/login" , formData ,{
+            const response = await axios.post("/api/v1/users/login" , formData ,{
                 withCredentials: true
             } )
             return response;
@@ -30,7 +30,7 @@ class authentication{
     }
 
     async socketAuth(){
-        const socketTokenResponse = await axios.post("http://localhost:3000/api/v1/chat/socket-auth" , null, {
+        const socketTokenResponse = await axios.post("/api/v1/chat/socket-auth" , null, {
             withCredentials: true
         })
         console.log("socket Token " , socketTokenResponse.data.message.socketToken)
@@ -38,7 +38,7 @@ class authentication{
     }
 
     async isAuthenticated(){
-       const isAuth =  await axios.post("http://localhost:3000/api/v1/users/user-auth" , null , {
+       const isAuth =  await axios.post("/api/v1/users/user-auth" , null , {
         withCredentials: true
        })
        
@@ -49,7 +49,7 @@ class authentication{
     }
 
     async logout(){
-       const response =  await axios.post("http://localhost:3000/api/v1/users/logout" , null , {
+       const response =  await axios.post("/api/v1/users/logout" , null , {
             withCredentials: true
         })
         return response;
