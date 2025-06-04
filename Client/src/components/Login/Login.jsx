@@ -7,7 +7,7 @@ function Login() {
   console.log("loginAtom" , loginAtomVal)
   return (
     <>
-        <div className='w-full bg-black flex items-center h-screen p-10 space-x-1'>
+        <div className='w-full bg-black russo-one-regular text-white flex items-center h-screen p-10 space-x-1'>
         <div className='absolute top-4'>
         </div>
         <div className='lg:w-[30%] mx-auto h-[50%]

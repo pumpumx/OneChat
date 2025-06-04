@@ -34,12 +34,12 @@ import { friendChattingWithData } from '../../atoms/friendAtom.js';
     <>
       {filteredHistory.length > 0 ? (
         filteredHistory.map((val, index) => (
-          <div key={index} className='w-[90%]   h-[2rem] text-2xl text-white'>
+          <div key={index} className='w-[90%] russo-one-regular   h-[2rem] text-2xl text-white'>
             <p className='font-medium '>{val}</p><br />
           </div>
         ))
       ) : (
-        <p>No messages Yet..</p>
+        <p className='russo-one-regular'>No messages Yet..</p>
       )}
     </>
   );

@@ -53,7 +53,7 @@ function LoginForm() {
     }
     return (
 
-        <div className='w-[90%] h-full bg-white p-10  rounded-xl'>  
+        <div className='w-[90%] h-full bg-white/40 p-10  rounded-xl'>  
             <h1 className='text-4xl h-[10%] a'>Sign in</h1>
 
             <form onSubmit={handleSubmit(onSubmit)}
@@ -62,8 +62,8 @@ function LoginForm() {
                 justify-around  items-center '
             >
                 <div className='w-full h-[60%] flex flex-col  justify-around' >
-                    < InputField label="Username" name="username" error={errors.username} register={register} />
-                    < InputField label="Password" type='password' name="password" error={errors.password} register={register} />
+                    < InputField label="Username" name="username" error={errors.username} register={register} className='text-black'/>
+                    < InputField label="Password" type='password' name="password" error={errors.password} register={register} className='text-black'/>
                 </div>
 
 
@@ -72,13 +72,13 @@ function LoginForm() {
                     ) : <p></p>}  
 
                 <button type="submit"
-                    className='lg:w-[25%] sm:[60%] h-[10%] hover:cursor-grab bg-[#beadad] hover:bg-green-400 rounded-xl 
+                    className='lg:w-[25%] sm:[60%] h-[10%] hover:cursor-pointer bg-[#beadad] hover:bg-black transition-all ease-in rounded-xl 
                     self-center  '
                 >
                  Sign In  
                 </button>
 
-                    <p className='text-sm font-semibold hover:text-green-400 text-gray-800 cursor-pointer'>Forgot Your Password?</p>
+                    <p className='text-sm font-semibold hover:text-green-400 text-white cursor-pointer'>Forgot Your Password?</p>
             </form>
         </div>
     )
