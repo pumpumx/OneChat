@@ -11,13 +11,11 @@
             })
 
             socket.on('send_private', ({ data, usernameToWhomMessageWillBeSent }) => { //This function takes handles private messaging !!  
-
                     const recipientSocket = userSocketMap.get(usernameToWhomMessageWillBeSent)
                     console.log("recipientSocker" , recipientSocket)
                     io.to(recipientSocket).emit("recieve_private", {data:data})
                     //Add message batching here later on in order to improve performance 
             })
-
                 socket.on('disconnect', () => {
                     console.log(`User ${socket.id} disconnected`)
                 })

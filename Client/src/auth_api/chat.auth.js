@@ -44,7 +44,7 @@ class chatApi{
 
     async savePersonalMessage(friendName , messageFromSender){
         try { //Add some redis type shit , didn't learned it yet!! 
-            const response = await axios.post(`/v1/chat/save-personal-chat` , {friendName , messageFromSender},{
+            const response = await axios.post(`api/v1/chat/save-personal-chat` , {friendName , messageFromSender},{
                 withCredentials:true
             })
             return response.data;
