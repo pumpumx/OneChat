@@ -1,11 +1,7 @@
 import React from 'react'
 import LoginForm from './loginComponents/LoginForm'
-import { useAtomValue } from 'jotai'
-import { userAtom } from '../../atoms/atom.js'
 import { ToastContainer } from 'react-toastify'
 function Login() {
-  const loginAtomVal = useAtomValue(userAtom)  
-  console.log("loginAtom" , loginAtomVal)
   return (
     <>
          <ToastContainer

@@ -15,7 +15,6 @@ const ToggledRequestTab = () => {
   const sendFriendRequestHandler = async (friendUsername) => {
     try { 
       const response = await friendReq.sendFriendRequest(friendUsername)
-      console.log("response" , response)
       if (response.status === 200){
         toast.success("Request Sent Successfully")
       } 
@@ -28,7 +27,6 @@ const ToggledRequestTab = () => {
   const acceptFriendHandler = async (userRes, username) => {
     try {
       const friendRes = await friendReq.friendReqAction(userRes, username)
-      console.log("friendRes", friendRes)
       if(friendRes.status === 200){
         toast.success(" Friend request Accepted")
 
@@ -41,7 +39,6 @@ const ToggledRequestTab = () => {
   const rejectFriendHandler = async (userRes, username) => {
     try {
       var friendRes = await friendReq.friendReqAction(userRes, username)
-      console.log("rejectFriendRes", friendRes)
       if(friendRes.status === 200){
         toast.success("Friend request Rejected")
       }
@@ -56,7 +53,6 @@ const ToggledRequestTab = () => {
       (async () => {
         const friendRes = await friendReq.checkPendingFriendRequest()
         setPendingFriendNameList(() => friendRes.map((user) => user.usernames))
-        console.log("pendingFriend",)
       })();
     } catch (error) {
       console.log("error", error)
@@ -115,14 +111,12 @@ function SideChatBar() {
   }
 
   const fetchPersnalFriendHandler = async (friend)=> {
-    console.log("friend at fetchPersonalFriendHandler" , friend)
      setFriendData(friend);
   }
 
   useEffect(() => {
     (async () => {
       try {
-        console.log("friendDataAtom" , friendData)
         const response = await friendReq.fetchAcceptedFriends()
         const acceptedFriends = response.map((user) => user.username)
         setConfirmedAtomList(acceptedFriends)

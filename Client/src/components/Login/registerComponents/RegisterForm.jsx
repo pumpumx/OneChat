@@ -3,11 +3,11 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import InputField from './InputField'
-import Spinner from '../../Utils/Spinner'
 import { authMethod } from '../../../auth_api/user.auth.js'
 import { useSetAtom } from 'jotai'
 import { userAtom } from '../../../atoms/atom.js'
 import { useNavigate } from 'react-router-dom'
+import {toast} from 'react-toastify'
 function RegisterForm() {
 
     const navigate = useNavigate()
@@ -32,16 +32,17 @@ function RegisterForm() {
 
     const onSubmit = async (data) => {
         try {
-            console.log("data: ", data)
             const response = await authMethod.registerUser(data)
             if (response && response.status == 200) {
                 setRegisterAtom(response.data)
                 setTimeout(() => {
                     navigate('/app')
                 }, 1000)
+                toast.success("Registration successfull")
             }
             else {
                 setRegisterAtom({})
+                toast.error("Registration failed")
             }
         } catch (error) {
             console.warn("Error occured at register user", error)
@@ -104,7 +105,7 @@ function RegisterForm() {
                         type="submit"
                         className="w-full md:w-1/3 mx-auto h-12 bg-[#beadad] hover:bg-green-500 transition-all duration-200 text-white font-semibold rounded-xl flex items-center justify-center"
                     >
-                        {isSubmitting ? <Spinner /> : "Sign Up"}
+                        {isSubmitting ? "Signing you up" : "Sign Up"}
                     </button>
 
                 </div>

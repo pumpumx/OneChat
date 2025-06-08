@@ -2,11 +2,21 @@ import React from 'react'
 import { useAtomValue } from 'jotai'
 import RegisterForm from './registerComponents/RegisterForm'
 import { userAtom} from '../../atoms/atom.js'
+import { ToastContainer } from 'react-toastify'
 function Register() {
   const registerAtomVal = useAtomValue(userAtom)
   console.log("register: ",registerAtomVal)
   return (
     <>
+     <ToastContainer
+          position='top-right'
+          autoClose={3000}  
+          hideProgressBar={true}
+          newestOnTop={true}
+          closeOnClick={true}
+          pauseOnHover={true}
+          draggable={true}
+        />
       <div className='w-full h-auto md:h-screen flex md:flex-row flex-col items-center justify-around bg-black  '>
         <div className="image flex flex-col  p-4 w-[100%]  mx-auto items-center justify-center  h-[80%] lg:w-[50%] lg:h-[80%] ">
           <div className='w-[85%] h-[30%] flex jusitfy-around md:justify-center 2xl:pl-50 flex-col  '>
