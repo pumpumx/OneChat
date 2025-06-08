@@ -2,9 +2,8 @@ import cookieParser from 'cookie-parser'
 import express from 'express'
 import cors from 'cors'
 import path from 'path'
+
 const app = express()
-
-
 app.use(express.urlencoded({
     extended:true,
     limit : "16kb"

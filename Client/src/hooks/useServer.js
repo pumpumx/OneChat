@@ -8,7 +8,7 @@ const clientConnectionInstance = async () => {
     const socketToken = await authMethod.socketAuth()
 
     if (!clientSocket || !clientSocket.connected) {
-      const socket = io("https://vanish-xj7x.onrender.com/", {
+      const socket = io("https://vanish-xj7x.onrender.com", {
         auth: { token: socketToken },
         reconnectionAttempts: 5,
         timeout: 5000,

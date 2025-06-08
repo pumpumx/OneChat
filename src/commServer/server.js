@@ -18,8 +18,6 @@ const serverInstance = async function () {
             }
         })
 
-        console.log("Socket io server running at port ", process.env.SERVERPORT)
-
         if (!io) throw new ApiError(500, "Failed to initialise a server", [{ status: 500, message: "Failed to initialise server" }])
 
         io.on('connection', (socket) => {
@@ -46,6 +44,9 @@ const serverInstance = async function () {
             })
         })
 
+        server.listen(process.env.PORT , '0.0.0.0', ()=>{
+            console.log("Server running")
+        })
     } catch (error) {
         throw new ApiError(500, " Server error while establishing server", [{ message: "Failed to create socketIo server" }])
     }
