@@ -25,7 +25,7 @@ function VideoSection() {
     })
 
     // Animate the text towards center
-    tl.to(textRef.current, { x: '110%', opacity: 1,scale:2 ,  duration: 3 }, 0)
+    tl.to(textRef.current, { x: '110%', opacity: 1,scale:2 ,  duration: 3 }, 0) //Remove these magic values
     tl.to(text2Ref.current, { x: '-100%', opacity: 1,scale:2, duration: 3 }, 0)
 
     // Scale up the video to fill the screen
@@ -43,10 +43,10 @@ function VideoSection() {
       <div className='w-[30%] h-[50%] russo-one-regular flex justify-end items-center'>
         <span className='z-10' ><p className='text-7xl  glow-text mr-5 z-50' ref={textRef}>Chat</p></span>
       </div>
-      <div className='w-[40%] h-[90%] flex items-center justify-center z-0'>
-        <video muted autoPlay={true} loop preload='auto' playsInline className='w-[100%] h-full' ref={videoRef}>
+      <div className='w-[40%] h-full z-0'>
+        <video muted autoPlay={true} loop preload='auto' playsInline className='w-[100%] h-full bg-cover' ref={videoRef}>
           <source src='/suku.mp4' />
-        </video>
+        </video>            
       </div>
       <div className='w-[30%] h-[50%] flex justify-start items-center z-10 ' >
         <span className='z-10'><p className='text-7xl russo-one-regular ml-5  glow-text z-50' ref={text2Ref}>Privately</p></span>

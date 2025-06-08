@@ -10,12 +10,8 @@ function LandingPage() {
   return (
     <>
     <Suspense fallback={<VanishSpinner/>}>
-      <div className='w-full bg-neutral-950 2xl:bg-transparent ' >
-      <video muted autoPlay={true} loop playsInline className=' fixed top-0 left-0 -z-1 ' preload='auto'>
-            <source src='/starBg.mp4' type='video/mp4' />         
-          </video>  
-        <div className='w-full h-[100vh] '>
-         
+      <div className='w-full bg-neutral-950  ' >
+        <div className='w-full h-[100vh] '>  
           <MainScreen />
         </div>
         <div className='w-full  h-[100vh]'> {/* This part mostly have constant values therefore not making it into a seperate component   */}

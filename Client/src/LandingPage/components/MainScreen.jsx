@@ -145,12 +145,13 @@ function MainScreen() {
 }
 
 // BottomTextFunction Component
-
+import ScrollTrigger from "gsap/ScrollTrigger";
 export const BottomTextFunction = () => {
   const bottomTextRef = useRef(null);
 
   useEffect(() => {
     gsap.registerPlugin(SplitText);
+    gsap.registerPlugin(ScrollTrigger);
     if (!bottomTextRef.current) return;
     const element = bottomTextRef.current;
     document.fonts.ready.then(() => {
@@ -173,7 +174,7 @@ export const BottomTextFunction = () => {
     <div className="mainText z-20 md:text-2xl  overflow-hidden bottom-0 w-full h-1/3  flex justify-center items-center text-center px-4">
       <p
         ref={bottomTextRef}
-        className="permanent-marker-regular text-red-500/90 whitespace-nowrap"
+        className="russo-one-regular text-red-500/90 whitespace-nowrap"
         style={{ fontSize: "clamp(5rem, 20vw, 18rem)", transform: "scaleX(1.6)" }}
       >
         VANISH

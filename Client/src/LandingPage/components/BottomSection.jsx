@@ -48,7 +48,7 @@ function BottomSection() {
             Our Vision
           </p>
         </span>
-        <span className="text-xl md:text-3xl lg:text-4xl russo-one-regular text-red-600 shadow-[0px_0px_50px_5px_black]">
+        <span className="text-xl md:text-3xl lg:text-4xl russo-one-regular text-red-600 ">
           <p ref={textRef}>
             To create a world where conversations are sacred and trust is
             absolute. A real-time chat app that stands as a fortress against
