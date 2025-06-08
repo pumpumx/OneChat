@@ -21,10 +21,9 @@ This is the **first version** of VANISH. It includes the core functionality and 
 
 Planned enhancements:
 - Mobile responsiveness
-- Notification system
-- Temporary or disposable usernames
-- End-to-end encryption (optional)
+- End-to-end encryption 
 - UI/UX improvements
+- Room features for multiple party chat
 
 ---
 
