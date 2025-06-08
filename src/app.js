@@ -4,10 +4,12 @@ import cors from 'cors'
 import path from 'path'
 
 const app = express()
+
 app.use(express.urlencoded({
     extended:true,
     limit : "16kb"
 }))
+
 app.use(cors({
     origin:"https://vanish-xj7x.onrender.com",
     optionsSuccessStatus : 200,

@@ -77,7 +77,7 @@ function LoginForm() {
                     Sign In
                 </button>
 
-                <p className='text-sm font-semibold hover:text-green-400 text-white cursor-pointer'>Forgot Your Password?</p>
+                <p className='text-sm font-semibold hover:text-green-400 text-white cursor-pointer' onClick={()=>toast.info("Feature coming soon...")}>Forgot Your Password?</p>
             </form>
         </div>
     )

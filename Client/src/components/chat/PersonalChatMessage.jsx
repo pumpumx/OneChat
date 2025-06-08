@@ -10,6 +10,7 @@ import { rotatePlus, rotateCross } from './chatAnimations.js'
 import { friendChattingWithData } from '../../atoms/friendAtom.js'
 import { useAtom, useAtomValue } from 'jotai'
 import { userAtom } from '../../atoms/atom.js';
+import { toast } from 'react-toastify'
 
 function PersonalChatMessage() {
   const user = useAtomValue(userAtom)
@@ -26,6 +27,7 @@ function PersonalChatMessage() {
     setDocToggle(!docToggle)
     if (docToggle === true) {
       rotatePlus(rotateRef)
+      toast.info("Feature coming soon")
     }
     else {
       rotateCross(rotateRef)
@@ -53,7 +55,7 @@ function PersonalChatMessage() {
     <>
       <div className='w-full h-full  flex russo-one-regular flex-col justify-between bg-[url(/chatBg2.gif)] bg-cover'>
 
-        <div className='w-full h-[80%] overflow-auto scroll-smooth text-white flex lg:flex-col  pt-5 items-center text-3xl px-10 lg:text-xl pixelify-sans-okish'>
+        <div className='w-full h-full lg:h-[80%] overflow-auto scroll-smooth text-white flex flex-col lg:flex-col  pt-5 items-center text-3xl px-10 lg:text-xl pixelify-sans-okish'>
           <PersonalChatHistory ref={childRef} message={message} />
         </div>
         <div className='w-full lg:h-[7%] p-2  bg-neutral-700 flex lg:flex-row items-center justify-center '>
@@ -70,7 +72,7 @@ function PersonalChatMessage() {
           <div className='lg:w-[5%] lg:h-full flex lg:flex-row items-center justify-center'>
             <button className='rounded-md  w-[70%] h-full cursor-pointer flex items-center justify-center '
               onClick={() => privateMessageHandler()}
-            >{message.trim() === '' ? <Mic color='gray' /> : <SendHorizontal color='gray' />}</button>
+            >{message.trim() === '' ? <Mic color='gray' onClick={()=>toast.info("Feature coming soon")} /> : <SendHorizontal color='gray' />}</button>
           </div>
         </div>
       </div>

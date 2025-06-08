@@ -19,7 +19,6 @@ import { friendChattingWithData } from '../../atoms/friendAtom.js';
    try {
      const response = await chat.fetchPersonalMessage(friendData)
      const value = response.map((val) => val.content)
-     console.log("Value ar fetchData" , value)
      setFilteredHistory([...value])
    } catch (error) {
     console.log("Error while fetching data" , error)

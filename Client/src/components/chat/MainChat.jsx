@@ -27,7 +27,7 @@ function MainChat() {
             <div className='w-full h-[10%] '>
               <Navbar />
             </div>
-            <div className='lg:w-full lg:h-[90%] '>
+            <div className='lg:w-full lg:h-[90%] h-full '>
               <Suspense fallback={<Spinner/>}>
               {roomOrPersonal ? <ChatMessage/>:<PersonalChatMessage/>}
               </Suspense>

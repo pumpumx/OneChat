@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FiSettings } from 'react-icons/fi';
 import { authMethod } from '../../auth_api/user.auth';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 function  Navbar() {
   const [showSettings, setShowSettings] = useState(false);
   const navigate = useNavigate()
@@ -30,8 +31,8 @@ function  Navbar() {
         {showSettings && (
           <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-md shadow-lg z-10">
             <ul className="py-2 text-sm">
-              <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Profile</li>
-              <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Theme</li>
+              <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer" onClick={()=>toast.info("Feature coming soon")}>Profile</li>
+              <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer" onClick={()=>toast.info("Feature coming soon")}>Theme</li>
               <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer" onClick={handleLogout}>Logout</li>
             </ul>
           </div>

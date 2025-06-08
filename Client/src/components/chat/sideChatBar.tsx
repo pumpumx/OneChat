@@ -106,8 +106,7 @@ function SideChatBar() {
   const removeFriendHandler = async (username) =>{
     try {
       const response = await friendReq.removeFriend(username)
-      if(response.status ===200){
-        
+      if(response.status === 200){
         toast.success(`${username} removed successfully`)
       }
     } catch (error) {
@@ -135,7 +134,7 @@ function SideChatBar() {
 
   
   return (
-    <div className='lg:w-[30%] h-full bg-red-400'> {/* Private chat with friends feature */}
+    <div className='lg:w-[30%] h-full '> {/* Private chat with friends feature */}
       <header className='w-full lg:h-[10%] bg-neutral-950 flex lg:flex-row items-center justify-between '>
         <span className='lg:w-[50%] lg:h-full flex flex-row items-center text-3xl pl-3 '><p className='text-white russo-one-regular text-4xl font-bold '>OneChat</p></span>
         <span className='lg:w-[20%] flex items-center relative justify-center  hover:cursor-pointer transition-all ease-out '>
