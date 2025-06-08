@@ -10,7 +10,7 @@ app.use(express.urlencoded({
     limit : "16kb"
 }))
 app.use(cors({
-    origin:"https://vanish-xj7x.onrender.com/",
+    origin:"https://vanish-xj7x.onrender.com",
     optionsSuccessStatus : 200,
     credentials: true
 }))
@@ -29,8 +29,6 @@ import friendRouter from './routes/friend.routes.js'
 app.use("/api/v1/users" , userRoute )
 app.use("/api/v1/chat" , chatRouter)
 app.use("/api/v1/friend",friendRouter)
-export default app
-
 
 const __dirname1 = path.resolve()
 
@@ -44,3 +42,6 @@ if(process.env.NODE_ENV == 'prod'){
         res.send("Api running successfully")
     })  
 }
+
+
+export default app
