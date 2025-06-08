@@ -8,7 +8,7 @@ const clientConnectionInstance = async () => {
     const socketToken = await authMethod.socketAuth()
 
     if (!clientSocket || !clientSocket.connected) {
-      const socket = io("/", {
+      const socket = io("/:8000", {
         auth: { token: socketToken },
         reconnectionAttempts: 5,
         timeout: 5000,

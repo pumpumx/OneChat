@@ -32,7 +32,6 @@ app.use("/api/v1/friend",friendRouter)
 export default app
 
 
-
 const __dirname1 = path.resolve()
 
 if(process.env.NODE_ENV == 'prod'){

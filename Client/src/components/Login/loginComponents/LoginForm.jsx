@@ -47,6 +47,7 @@ function LoginForm() {
                 setLoginAtom(null)
             }
         } catch (error) {
+            console.log(error)
             toast.error("Invalid user credentials")
         }
     }
