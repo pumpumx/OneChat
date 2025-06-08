@@ -107,6 +107,7 @@ function SideChatBar() {
     try {
       const response = await friendReq.removeFriend(username)
       if(response.status ===200){
+        
         toast.success(`${username} removed successfully`)
       }
     } catch (error) {

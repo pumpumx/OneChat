@@ -1,12 +1,16 @@
 import { Server } from "socket.io";
 import { ApiError } from "../utils/apiError.js";
+import http from 'http'
 import { handleMessages } from "./messageHandler.js";
+import app from "../app.js";
 import jwt from 'jsonwebtoken'
 let userSocketMap = new Map()
 let io;
 const serverInstance = async function () {
     try {
-        io = new Server(process.env.SERVERPORT, {
+        const server = http.createServer(app)
+        if(!server) throw new ApiError(404,"Failed to initialise a server")
+        io = new Server(server, {
             cors: {
                 origin: "*",
                 credentials: true,
